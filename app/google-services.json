@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1085414551626",
+    "project_id": "sapling-98700",
+    "storage_bucket": "sapling-98700.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085414551626:android:699e705b21306bedf336b3",
+        "android_client_info": {
+          "package_name": "com.example.sapling"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085414551626-oovqn6321s07imoki4kh6q0cf45loqte.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sapling",
+            "certificate_hash": "c2af08878db41d8392e0f28381a9d432414d763b"
+          }
+        },
+        {
+          "client_id": "1085414551626-ibjn02n4ndpreqnv82m73o6r3duthns6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCecuRf6A-nPuY3yxRDxRxmRcFs0f71X5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085414551626-ibjn02n4ndpreqnv82m73o6r3duthns6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
