@@ -51,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "User registered successfully!",
                                 Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(),
-                                QuestionsActivity.class));
+                                CategoriesActivity.class));
                     }
                 });
     }

@@ -46,7 +46,7 @@ public class SignInActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 "Login successful", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), QuestionsActivity.class));
+                        startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
                     }
                 });
     }
