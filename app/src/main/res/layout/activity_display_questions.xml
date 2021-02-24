@@ -6,21 +6,22 @@
     android:layout_height="match_parent"
     android:background="#B3E5FC"
     android:orientation="vertical"
-    tools:context=".CategoriesActivity">
-
+    tools:context=".DisplayQuestionsActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Choose a category!"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:background="@drawable/border_text"
-        android:layout_margin="50dp"
-        android:textSize="25sp" />
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:onClick="addQuestion"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
 </LinearLayout>

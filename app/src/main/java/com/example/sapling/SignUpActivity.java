@@ -1,24 +1,28 @@
 package com.example.sapling;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUpActivity extends AppCompatActivity {
 
     EditText emailText;
     EditText passwordText;
+    EditText firstNameText;
+    EditText lastNameText;
+    Switch studentSwitch;
     FirebaseAuth firebaseAuth;
     private static final String DEBUG_TAG = "SignUpActivity";
 
@@ -33,12 +37,19 @@ public class SignUpActivity extends AppCompatActivity {
         emailText = findViewById(R.id.signup_email);
         emailText.requestFocus();
         passwordText = findViewById(R.id.signup_password);
+        firstNameText = findViewById(R.id.first_name);
+        lastNameText = findViewById(R.id.last_name);
+        studentSwitch = findViewById(R.id.switch1);
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
     public void login(View view) {
         String emailID = emailText.getText().toString();
         String password = passwordText.getText().toString();
+        String firstName = firstNameText.getText().toString();
+        String lastName = lastNameText.getText().toString();
+        Boolean isInstructorChecked = !studentSwitch.isChecked();
+        Integer isInstructor = isInstructorChecked ? 1 : 0;
         Log.i(DEBUG_TAG, "User ID : " + emailID);
         Log.i(DEBUG_TAG, "Password: " + password);
         firebaseAuth.createUserWithEmailAndPassword(emailID, password)
@@ -48,10 +59,33 @@ public class SignUpActivity extends AppCompatActivity {
                                 "SignUp unsuccessful: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "User registered successfully!",
-                                Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),
-                                CategoriesActivity.class));
+
+                        UserDbHelper dbHelper = new UserDbHelper(getApplicationContext());
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(UsersInfoContract.Users.USER_FIRST_NAME, firstName);
+                        contentValues.put(UsersInfoContract.Users.USER_LAST_NAME, lastName);
+                        contentValues.put(UsersInfoContract.Users.USER_EMAIL, emailID);
+                        contentValues.put(UsersInfoContract.Users.IS_INSTRUCTOR, isInstructor);
+                        long recordId = db.insert(UsersInfoContract.Users.TABLE_NAME,
+                                null, contentValues);
+                        db.close();
+                        if (recordId == -1) {
+                            Toast.makeText(getApplicationContext(), "User insertion failed",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "User registered successfully!",
+                                    Toast.LENGTH_SHORT).show();
+                            SharedPreferences sharedPref =
+                                    getApplicationContext().getSharedPreferences("sapling",
+                                            Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putBoolean("isInstructor", isInstructorChecked);
+                            editor.apply();
+                            startActivity(new Intent(getApplicationContext(),
+                                    CategoriesActivity.class));
+                        }
                     }
                 });
     }

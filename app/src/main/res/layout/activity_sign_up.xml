@@ -16,7 +16,7 @@
         android:textSize="40sp"
         android:textStyle="bold"
         android:layout_marginTop="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_email"
+        app:layout_constraintBottom_toTopOf="@+id/signup_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

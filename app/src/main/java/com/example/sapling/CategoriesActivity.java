@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,50 +39,5 @@ public class CategoriesActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         CustomAdapter adapter = new CustomAdapter(this, categories, images);
         recyclerView.setAdapter(adapter);
-    }
-}
-
-class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.viewHolder> {
-
-    private static final String DEBUG_TAG = "Adapter";
-
-    public static class viewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView name;
-
-        public viewHolder(View itemView) {
-            super(itemView);
-            this.image = (ImageView) itemView.findViewById(R.id.category_image);
-            this.name = (TextView) itemView.findViewById(R.id.category_name);
-        }
-    }
-
-    private Activity context;
-    private List<String> categories;
-    private List<Integer> images;
-
-    public CustomAdapter(Activity context, List<String> categories, List<Integer> images) {
-        this.context = context;
-        this.categories = categories;
-        this.images = images;
-        Log.i(DEBUG_TAG, "Categories : " + categories.toString());
-    }
-
-    @NonNull
-    @Override
-    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.card_items, parent, false);
-        return new viewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull CustomAdapter.viewHolder holder, int position) {
-        holder.image.setImageResource(images.get(position));
-        holder.name.setText(categories.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return categories.size();
     }
 }

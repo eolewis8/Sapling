@@ -9,7 +9,9 @@
         android:roundIcon="@drawable/sapling_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sapling">
-        <activity android:name=".AddQuestionsActivity"></activity>
+        <activity android:name=".EditQuestions"></activity>
+        <activity android:name=".DisplayQuestionsActivity" />
+        <activity android:name=".AddQuestionsActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />

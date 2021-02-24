@@ -3,7 +3,11 @@ package com.example.sapling;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +50,24 @@ public class SignInActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 "Login successful", Toast.LENGTH_SHORT).show();
+                        UserDbHelper dbHelper = new UserDbHelper(getApplicationContext());
+                        SQLiteDatabase db = dbHelper.getReadableDatabase();
+                        String[] columns = {UsersInfoContract.Users.IS_INSTRUCTOR};
+                        String selection = UsersInfoContract.Users.USER_EMAIL + " LIKE? ";
+                        String[] selectionArgs = {"%" + emailID + "%"};
+                        Cursor cursor = db.query(UsersInfoContract.Users.TABLE_NAME,columns,
+                                selection,selectionArgs,null, null, null);
+                        cursor.moveToFirst();
+                        int isInstructor =
+                                cursor.getInt(cursor.getColumnIndex(UsersInfoContract.Users.IS_INSTRUCTOR));
+                        Log.i(DEBUG_TAG, "Instructor : " + isInstructor);
+                        db.close();
+                        SharedPreferences sharedPref =
+                                getApplicationContext().getSharedPreferences("sapling",
+                                        Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putBoolean("isInstructor", isInstructor == 1);
+                        editor.apply();
                         startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
                     }
                 });
