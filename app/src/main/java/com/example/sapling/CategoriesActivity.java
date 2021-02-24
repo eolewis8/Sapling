@@ -23,10 +23,10 @@ import java.util.List;
 public class CategoriesActivity extends AppCompatActivity {
 
     private List<String> categories = new ArrayList<String>(
-            Arrays.asList("Science", "Engineering", "Maths", "Technology"));
+            Arrays.asList("Science", "Technology", "Engineering", "Maths"));
 
-    private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.sapling_logo,
-            R.drawable.sapling_logo, R.drawable.sapling_logo, R.drawable.sapling_logo));
+    private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.science_logo,
+            R.drawable.tech_logo, R.drawable.engr_logo, R.drawable.math_logo));
 
     private RecyclerView recyclerView;
 
