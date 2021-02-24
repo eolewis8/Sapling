@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choose a category"
+        android:textColor="#cad639"
         android:gravity="center"
         android:textStyle="bold"
         android:layout_marginBottom="20dp"
