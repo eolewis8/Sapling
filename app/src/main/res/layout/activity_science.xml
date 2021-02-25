@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choose a Science"
+        android:fontFamily="@font/fredoka_one"
         android:textColor="#cad639"
         android:gravity="center"
         android:textStyle="bold"
