@@ -6,10 +6,11 @@
         android:allowBackup="true"
         android:icon="@drawable/sapling_logo"
         android:label="@string/app_name"
+        android:logo="@drawable/profile"
         android:roundIcon="@drawable/sapling_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sapling">
-        <activity android:name=".AddQuestionsActivity"></activity>
+        <activity android:name=".AddQuestionsActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
