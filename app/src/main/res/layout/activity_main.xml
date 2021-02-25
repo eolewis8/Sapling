@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     android:background="#B3E5FC"
     tools:context=".MainActivity"
-
     >
+
+
 
     <ImageView
         android:id="@+id/imageView"
