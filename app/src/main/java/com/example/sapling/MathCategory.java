@@ -1,6 +1,7 @@
 package com.example.sapling;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -33,5 +34,12 @@ public class MathCategory extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         DisciplineAdapter adapter = new DisciplineAdapter(this, categories, images);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

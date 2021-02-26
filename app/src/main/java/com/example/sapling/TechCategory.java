@@ -1,6 +1,7 @@
 package com.example.sapling;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -11,16 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// ToDo: needs to be connected to Categories Activity via onClick
 
 public class TechCategory extends AppCompatActivity {
 
     private List<String> categories = new ArrayList<String>(
             Arrays.asList("C", "Java", "Python", "Kotlin"));
 
-    // change images
-    private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.science_logo,
-            R.drawable.biology_logo, R.drawable.chem_logo, R.drawable.space_logo));
+    private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.c_logo,
+            R.drawable.java_logo, R.drawable.python_logo, R.drawable.kotlin_logo));
 
     private RecyclerView recyclerView;
 
@@ -33,5 +32,12 @@ public class TechCategory extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         DisciplineAdapter adapter = new DisciplineAdapter(this, categories, images);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

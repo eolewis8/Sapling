@@ -37,6 +37,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
                             intent.putExtra("Subject", name.getText().toString());
                             context.startActivity(intent);
                         }
+                        // Technology one isn't working for some reason
                         if (name.getText().toString().equals("Technology")) {
                                 Intent intent = new Intent(context, TechCategory.class);
                                 intent.putExtra("Subject", name.getText().toString());
