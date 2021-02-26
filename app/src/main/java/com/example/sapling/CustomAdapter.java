@@ -34,12 +34,35 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
             itemView.setOnClickListener(v -> {
                 SharedPreferences sharedPref =
                         context.getSharedPreferences("sapling", Context.MODE_PRIVATE);
-                isInstructor = sharedPref.getBoolean("isInstructor", false);
-                if (isInstructor) {
+                        isInstructor = sharedPref.getBoolean("isInstructor", false);
+
+                        if(name.getText().toString().equals("Science")) {
+                            Intent intent = new Intent(context, ScienceCategory.class);
+                            intent.putExtra("Subject", name.getText().toString());
+                            context.startActivity(intent);
+                        }
+                        if (name.getText().toString().equals("Technology")) {
+                                Intent intent = new Intent(context, TechCategory.class);
+                                intent.putExtra("Subject", name.getText().toString());
+                                context.startActivity(intent);
+                        }
+                        if (name.getText().toString().equals("Engineering")) {
+                            Intent intent = new Intent(context, EngrCategory.class);
+                            intent.putExtra("Subject", name.getText().toString());
+                            context.startActivity(intent);
+                        }
+                        if (name.getText().toString().equals("Maths")) {
+                            Intent intent = new Intent(context, MathCategory.class);
+                            intent.putExtra("Subject", name.getText().toString());
+                            context.startActivity(intent);
+                        }
+
+                /*if (isInstructor) {
                     Intent intent = new Intent(context, DisplayQuestionsActivity.class);
                     intent.putExtra("Subject", name.getText().toString());
                     context.startActivity(intent);
-                }
+                }*/
+
             });
         }
     }

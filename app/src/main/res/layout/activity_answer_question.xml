@@ -8,20 +8,32 @@
     android:orientation="vertical"
     tools:context=".CategoriesActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="Time"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/border_text"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="150dp"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="Question goes here"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/border_text"
+        android:layout_margin="25dp"
+        android:textSize="25sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:text="Choose a category!"
-        android:fontFamily="@font/fredoka_one"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:background="@drawable/border_text"
-        android:layout_margin="50dp"
-        android:textSize="25sp" />
+
+
 </LinearLayout>

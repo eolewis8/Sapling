@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.view.Menu;
 
 public class EditQuestions extends AppCompatActivity {
 
@@ -84,4 +85,12 @@ public class EditQuestions extends AppCompatActivity {
         intent.putExtra("Title", title);
         startActivity(intent);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
 }

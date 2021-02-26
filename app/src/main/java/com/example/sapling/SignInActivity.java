@@ -2,6 +2,8 @@ package com.example.sapling;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ public class SignInActivity extends AppCompatActivity {
         emailText = findViewById(R.id.et_email);
         emailText.requestFocus();
         passwordText = findViewById(R.id.et_password);
+
     }
 
     public void login(View view) {
@@ -72,4 +77,13 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
 }
