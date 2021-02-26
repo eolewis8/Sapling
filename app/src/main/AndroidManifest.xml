@@ -9,6 +9,7 @@
         android:roundIcon="@drawable/sapling_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sapling">
+        <activity android:name=".AnswerQuestionsActivity"></activity>
         <activity android:name=".EditQuestions" />
         <activity android:name=".DisplayQuestionsActivity" />
         <activity android:name=".AddQuestionsActivity" />
@@ -20,10 +21,9 @@
         <activity android:name=".EngrCategory" />
         <activity android:name=".MathCategory" />
         <activity android:name=".MainActivity">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

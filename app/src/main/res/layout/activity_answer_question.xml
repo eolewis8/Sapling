@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#B3E5FC"
     android:orientation="vertical"
-    tools:context=".CategoriesActivity">
+    tools:context=".AnswerQuestionsActivity">
 
     <TextView
         android:layout_width="match_parent"

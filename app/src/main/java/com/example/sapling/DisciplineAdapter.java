@@ -42,6 +42,9 @@ class DisciplineAdapter extends RecyclerView.Adapter<DisciplineAdapter.CategoryV
                     intent.putExtra("Subject", subject);
                     intent.putExtra("Title", name.getText().toString());
                     context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, AnswerQuestionsActivity.class);
+                    context.startActivity(intent);
                 }
             });
         }
