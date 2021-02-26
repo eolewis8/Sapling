@@ -37,7 +37,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
                 isInstructor = sharedPref.getBoolean("isInstructor", false);
                 if (isInstructor) {
                     Intent intent = new Intent(context, DisplayQuestionsActivity.class);
-                    intent.putExtra("subject", name.getText().toString());
+                    intent.putExtra("Subject", name.getText().toString());
                     context.startActivity(intent);
                 }
             });

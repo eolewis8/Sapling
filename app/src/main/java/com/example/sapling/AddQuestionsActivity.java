@@ -38,7 +38,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
         String choice4 = choice4Text.getText().toString();
         String question = questionText.getText().toString();
         String answer = answerText.getText().toString();
-        String subject = getIntent().getStringExtra("subject");
+        String subject = getIntent().getStringExtra("Subject");
         QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -61,7 +61,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
                     "Question added successfully!",
                     Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, DisplayQuestionsActivity.class);
-            intent.putExtra("subject", subject);
+            intent.putExtra("Subject", subject);
             startActivity(intent);
         }
     }

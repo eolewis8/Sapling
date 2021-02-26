@@ -22,7 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText passwordText;
     EditText firstNameText;
     EditText lastNameText;
-    Switch studentSwitch;
+    Switch instructorSwitch;
     FirebaseAuth firebaseAuth;
     private static final String DEBUG_TAG = "SignUpActivity";
 
@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         passwordText = findViewById(R.id.signup_password);
         firstNameText = findViewById(R.id.first_name);
         lastNameText = findViewById(R.id.last_name);
-        studentSwitch = findViewById(R.id.switch1);
+        instructorSwitch = findViewById(R.id.switch1);
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -48,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
         String firstName = firstNameText.getText().toString();
         String lastName = lastNameText.getText().toString();
-        Boolean isInstructorChecked = !studentSwitch.isChecked();
+        Boolean isInstructorChecked = instructorSwitch.isChecked();
         Integer isInstructor = isInstructorChecked ? 1 : 0;
         Log.i(DEBUG_TAG, "User ID : " + emailID);
         Log.i(DEBUG_TAG, "Password: " + password);

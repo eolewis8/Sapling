@@ -25,12 +25,10 @@ import java.util.List;
 
 public class DisplayQuestionsActivity extends AppCompatActivity {
 
-//    private List<String> questions = new ArrayList<String>(
-//            Arrays.asList("When __________ callback is called by Android, app is visible but has " +
-//                    "no focus", "Engineering", "Maths", "Technology"));
-    private List<String> questions = new ArrayList<>();
+    private List<Questions> questions = new ArrayList<>();
     private List<Integer> images = new ArrayList<>();
     private String subject;
+    private String title;
 
     private RecyclerView recyclerView;
 
@@ -38,34 +36,45 @@ public class DisplayQuestionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_questions);
-        subject = getIntent().getStringExtra("subject");
+        subject = getIntent().getStringExtra("Subject");
+        title = "Computer";
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String[] columns = {QuestionsInfoContract.Questions.QUESTION};
-        String title = "Computer";
+
         String selection = QuestionsInfoContract.Questions.QUESTION_SUBJECT + " LIKE? AND " +
                 QuestionsInfoContract.Questions.QUESTION_TITLE + " LIKE?";
         String[] selectionArgs = {"%" + subject + "%", "%" + title + "%"};
-        Cursor cursor = db.query(QuestionsInfoContract.Questions.TABLE_NAME,columns,
-                selection,selectionArgs,null, null, null);
+        Cursor cursor = db.query(QuestionsInfoContract.Questions.TABLE_NAME,null,
+                selection, selectionArgs,null, null, null);
         while(cursor.moveToNext()) {
-            String question =
-                    cursor.getString(cursor.getColumnIndex(QuestionsInfoContract.Questions.QUESTION));
-            questions.add(question);
+            int ID = cursor.getInt(cursor.getColumnIndex(QuestionsInfoContract.Questions._ID));
+            String question = cursor.getString(cursor.getColumnIndex(
+                    QuestionsInfoContract.Questions.QUESTION));
+            String answer = cursor.getString(cursor.getColumnIndex(
+                    QuestionsInfoContract.Questions.QUESTION_ANSWER));
+            String choice1 = cursor.getString(cursor.getColumnIndex(
+                    QuestionsInfoContract.Questions.QUESTION_CHOICE1));
+            String choice2 = cursor.getString(cursor.getColumnIndex(
+                    QuestionsInfoContract.Questions.QUESTION_CHOICE2));
+            String choice3 = cursor.getString(cursor.getColumnIndex(
+                    QuestionsInfoContract.Questions.QUESTION_CHOICE3));
+            String choice4 = cursor.getString(cursor.getColumnIndex(
+                    QuestionsInfoContract.Questions.QUESTION_CHOICE4));
+            questions.add(new Questions(ID, question, answer, choice1, choice2, choice3, choice4));
             images.add(R.drawable.edit_icon);
         }
         db.close();
-        QuestionAdapter adapter = new QuestionAdapter(this, questions, images);
+        QuestionAdapter adapter = new QuestionAdapter(this, questions, images, subject,
+                title);
         recyclerView.setAdapter(adapter);
     }
 
     public void addQuestion(View view) {
-
         Intent intent = new Intent(this, AddQuestionsActivity.class);
-        intent.putExtra("subject", subject);
+        intent.putExtra("Subject", subject);
         startActivity(intent);
     }
 }
@@ -86,14 +95,19 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
     }
 
     private Activity context;
-    private List<String> questions;
+    private List<Questions> questions;
     private List<Integer> images;
+    private String subject;
+    private String title;
 
 
-    public QuestionAdapter(Activity context, List<String> questions, List<Integer> images) {
+    public QuestionAdapter(Activity context, List<Questions> questions, List<Integer> images,
+                           String subject, String title) {
         this.context = context;
         this.questions = questions;
         this.images = images;
+        this.subject = subject;
+        this.title = title;
     }
 
     @NonNull
@@ -109,9 +123,18 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
         holder.image.setClickable(true);
         holder.image.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditQuestions.class);
+            intent.putExtra("ID", questions.get(position).getID());
+            intent.putExtra("Question", questions.get(position).getQuestion());
+            intent.putExtra("Answer", questions.get(position).getAnswer());
+            intent.putExtra("Choice1", questions.get(position).getChoice1());
+            intent.putExtra("Choice2", questions.get(position).getChoice2());
+            intent.putExtra("Choice3", questions.get(position).getChoice3());
+            intent.putExtra("Choice4", questions.get(position).getChoice4());
+            intent.putExtra("Subject", subject);
+            intent.putExtra("Title", title);
             this.context.startActivity(intent);
         });
-        holder.name.setText(questions.get(position));
+        holder.name.setText(questions.get(position).getQuestion());
     }
 
     @Override
