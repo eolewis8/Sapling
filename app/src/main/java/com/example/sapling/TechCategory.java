@@ -31,7 +31,7 @@ public class TechCategory extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        CustomAdapter adapter = new CustomAdapter(this, categories, images);
+        DisciplineAdapter adapter = new DisciplineAdapter(this, categories, images);
         recyclerView.setAdapter(adapter);
     }
 }

@@ -30,6 +30,7 @@ public class DisplayQuestionsActivity extends AppCompatActivity {
     private List<Integer> images = new ArrayList<>();
     private String subject;
     private String title;
+    private static final String DEBUG_TAG = "DisplayQuestionsActivity";
 
     private RecyclerView recyclerView;
 
@@ -38,7 +39,9 @@ public class DisplayQuestionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_questions);
         subject = getIntent().getStringExtra("Subject");
-        title = "Computer";
+        title = getIntent().getStringExtra("Title");
+        Log.i(DEBUG_TAG, "Chosen subject is : " + subject);
+        Log.i(DEBUG_TAG, "Chosen title is : " + title);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -76,6 +79,7 @@ public class DisplayQuestionsActivity extends AppCompatActivity {
     public void addQuestion(View view) {
         Intent intent = new Intent(this, AddQuestionsActivity.class);
         intent.putExtra("Subject", subject);
+        intent.putExtra("Title", title);
         startActivity(intent);
     }
 

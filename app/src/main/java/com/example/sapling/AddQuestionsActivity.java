@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
     EditText choice4Text;
     EditText questionText;
     EditText answerText;
+    private static final String DEBUG_TAG = "AddQuestionsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +42,14 @@ public class AddQuestionsActivity extends AppCompatActivity {
         String question = questionText.getText().toString();
         String answer = answerText.getText().toString();
         String subject = getIntent().getStringExtra("Subject");
+        String title = getIntent().getStringExtra("Title");
+        Log.i(DEBUG_TAG, "Add questions subject : " + subject);
+        Log.i(DEBUG_TAG, "Add questions title : " + title);
         QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(QuestionsInfoContract.Questions.QUESTION_SUBJECT, subject);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_TITLE, "Computer");
+        contentValues.put(QuestionsInfoContract.Questions.QUESTION_TITLE, title);
         contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE1, choice1);
         contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE2, choice2);
         contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE3, choice3);
@@ -63,6 +68,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, DisplayQuestionsActivity.class);
             intent.putExtra("Subject", subject);
+            intent.putExtra("Title", title);
             startActivity(intent);
         }
     }

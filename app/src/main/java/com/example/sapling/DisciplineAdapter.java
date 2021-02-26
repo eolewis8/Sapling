@@ -16,9 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolder> {
+class DisciplineAdapter extends RecyclerView.Adapter<DisciplineAdapter.CategoryViewHolder> {
 
     private static final String DEBUG_TAG = "Adapter";
+    private static Boolean isInstructor;
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
@@ -31,27 +32,17 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
             this.name = (TextView) itemView.findViewById(R.id.category_name);
             this.context = context;
             itemView.setOnClickListener(v -> {
+                SharedPreferences sharedPref =
+                        context.getSharedPreferences("sapling", Context.MODE_PRIVATE);
+                isInstructor = sharedPref.getBoolean("isInstructor", false);
 
-                        if(name.getText().toString().equals("Science")) {
-                            Intent intent = new Intent(context, ScienceCategory.class);
-                            intent.putExtra("Subject", name.getText().toString());
-                            context.startActivity(intent);
-                        }
-                        if (name.getText().toString().equals("Technology")) {
-                                Intent intent = new Intent(context, TechCategory.class);
-                                intent.putExtra("Subject", name.getText().toString());
-                                context.startActivity(intent);
-                        }
-                        if (name.getText().toString().equals("Engineering")) {
-                            Intent intent = new Intent(context, EngrCategory.class);
-                            intent.putExtra("Subject", name.getText().toString());
-                            context.startActivity(intent);
-                        }
-                        if (name.getText().toString().equals("Maths")) {
-                            Intent intent = new Intent(context, MathCategory.class);
-                            intent.putExtra("Subject", name.getText().toString());
-                            context.startActivity(intent);
-                        }
+                if (isInstructor) {
+                    String subject = context.getIntent().getStringExtra("Subject");
+                    Intent intent = new Intent(context, DisplayQuestionsActivity.class);
+                    intent.putExtra("Subject", subject);
+                    intent.putExtra("Title", name.getText().toString());
+                    context.startActivity(intent);
+                }
             });
         }
     }
@@ -60,11 +51,10 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
     private List<String> categories;
     private List<Integer> images;
 
-    public CustomAdapter(Activity context, List<String> categories, List<Integer> images) {
+    public DisciplineAdapter(Activity context, List<String> categories, List<Integer> images) {
         this.context = context;
         this.categories = categories;
         this.images = images;
-        Log.i(DEBUG_TAG, "Categories : " + categories.toString());
     }
 
     @NonNull
@@ -85,3 +75,4 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
         return categories.size();
     }
 }
+
