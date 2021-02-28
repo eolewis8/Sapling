@@ -30,10 +30,10 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.sapling_logo);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setTitle("Sapling");
+        // getSupportActionBar().setDisplayShowHomeEnabled(true);
+        // getSupportActionBar().setLogo(R.drawable.sapling_logo);
+        // getSupportActionBar().setDisplayUseLogoEnabled(true);
+        // getSupportActionBar().setTitle("Sapling");
         emailText = findViewById(R.id.signup_email);
         emailText.requestFocus();
         passwordText = findViewById(R.id.signup_password);

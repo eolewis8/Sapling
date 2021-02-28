@@ -34,7 +34,7 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        // getSupportActionBar().setDisplayUseLogoEnabled(true);
         firebaseAuth = FirebaseAuth.getInstance();
         emailText = findViewById(R.id.et_email);
         emailText.requestFocus();
