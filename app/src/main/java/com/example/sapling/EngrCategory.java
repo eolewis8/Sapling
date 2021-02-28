@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,7 +45,7 @@ public class EngrCategory extends AppCompatActivity {
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.home_logo);
+        // getSupportActionBar().setHomeAsUpIndicator(R.drawable.home_logo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -69,9 +70,11 @@ public class EngrCategory extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                Intent homeIntent = new Intent(this, CategoriesActivity.class);
-                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(homeIntent);
+                Toast.makeText(this, "Go to Categories Screen", Toast.LENGTH_SHORT);
+            //case android.R.id.go_profile:
+            //    Toast.makeText(this, "Go to profile screen/stats screen", Toast.LENGTH_SHORT);
+            //case android.R.id.log_out:
+            //    Toast.makeText(this, "Go to Sign In", Toast.LENGTH_SHORT);
         }
         return (super.onOptionsItemSelected(menuItem));
     }

@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!--<item
-        android:id="@+id/back_button"
-        android:icon="@drawable/back_button"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="1"
-        android:title="Back">
-    </item> -->
+
     <item
         android:id="@+id/home"
-        android:icon="@drawable/home_logo"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="2"
+        app:showAsAction="never"
         android:title="Home">
+    </item>
+
+    <item
+        android:id="@+id/go_profile"
+        app:showAsAction="never"
+        android:title="Profile">
+    </item>
+
+    <item
+        android:id="@+id/log_out"
+        app:showAsAction="never"
+        android:title="Log Out">
     </item>
 
 </menu>
