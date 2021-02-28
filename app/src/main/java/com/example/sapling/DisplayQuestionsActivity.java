@@ -42,8 +42,10 @@ public class DisplayQuestionsActivity extends AppCompatActivity {
         title = getIntent().getStringExtra("Title");
         Log.i(DEBUG_TAG, "Chosen subject is : " + subject);
         Log.i(DEBUG_TAG, "Chosen title is : " + title);
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
