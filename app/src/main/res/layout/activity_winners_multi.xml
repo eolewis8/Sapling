@@ -19,6 +19,7 @@
         android:layout_marginBottom="20dp"
         android:textSize="40sp" />
 
+    <!--View to show the top 3 players and their scores -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
