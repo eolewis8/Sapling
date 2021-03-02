@@ -13,6 +13,7 @@ public class Rooms {
     private int highScore;
     private String highScorePlayer;
     private Map<String, Integer> stats;
+    private Boolean isAvailable;
 
     public Rooms() {};
 
@@ -24,6 +25,7 @@ public class Rooms {
         this.numConnected = players.size();
         this.highScore = 0;
         this.highScorePlayer = "";
+        this.isAvailable = true;
     }
 
     public int getNumPlayers() {
@@ -56,5 +58,37 @@ public class Rooms {
 
     public void setNumConnected(int numConnected) {
         this.numConnected = numConnected;
+    }
+
+    public int getHighScore() {
+        return highScore;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
+
+    public String getHighScorePlayer() {
+        return highScorePlayer;
+    }
+
+    public void setHighScorePlayer(String highScorePlayer) {
+        this.highScorePlayer = highScorePlayer;
+    }
+
+    public Map<String, Integer> getStats() {
+        return stats;
+    }
+
+    public void setStats(Map<String, Integer> stats) {
+        this.stats = stats;
+    }
+
+    public Boolean getAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(Boolean isAvailable) {
+        isAvailable = isAvailable;
     }
 }

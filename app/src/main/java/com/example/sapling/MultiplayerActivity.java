@@ -13,11 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.model.Question;
+import com.example.model.Users;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,15 +40,17 @@ public class MultiplayerActivity extends AppCompatActivity {
     DatabaseReference statsPlayerRef;
     DatabaseReference statsRef;
     DatabaseReference roomRef;
+    DatabaseReference userRef;
     private boolean shouldShowTimer = true;
     Integer currentQuestion = 1;
     Integer numCorrect = 0;
     int numIncorrect = 0;
     private Button correctAnswer;
-    int playerHash;
+    String playerID;
     String roomName;
     int currentPoints = 300;
     int totalPoints = 0;
+    private static final String DEBUG_TAG = "MultiplayerActivity";
     Map<String, Integer> playerToPointsMap = new HashMap<>();
 
     @Override
@@ -63,9 +67,9 @@ public class MultiplayerActivity extends AppCompatActivity {
         correctAnswer = choice1Button;
         SharedPreferences sharedPref =
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
-        playerHash = sharedPref.getInt("playerHash", -1);
+        playerID = sharedPref.getString("playerID", "");
         database = FirebaseDatabase.getInstance();
-        playerToPointsMap.put(String.valueOf(playerHash), 0);
+        playerToPointsMap.put(playerID, 0);
         roomName = getIntent().getStringExtra("roomName");
         statsRef = database.getReference("rooms/" + roomName + "/stats/");
         roomRef = database.getReference("rooms/" + roomName);
@@ -88,7 +92,10 @@ public class MultiplayerActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                Map<String, Object> scores = new HashMap<>();
+                scores.put("highScore", snapshot.getValue());
+                scores.put("highScorePlayer", snapshot.getKey());
+                roomRef.updateChildren(scores);
             }
 
             @Override
@@ -103,7 +110,9 @@ public class MultiplayerActivity extends AppCompatActivity {
 
             // ...
         });
-        statsPlayerRef = database.getReference("rooms/" + roomName + "/stats/" + String.valueOf(playerHash));
+        statsPlayerRef = database.getReference("rooms/" + roomName + "/stats/" + playerID);
+
+        userRef = database.getReference("users/" + playerID);
         populateQuestion();
     }
 
@@ -148,7 +157,7 @@ public class MultiplayerActivity extends AppCompatActivity {
                         choice3Button.setClickable(false);
                         choice4Button.setClickable(false);
                         if (choice1Button == finalCorrectAnswer) {
-                            choice1Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            choice1Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             //choice1Button.setBackgroundColor(Color.GREEN);
                             numCorrect += 1;
                             totalPoints += currentPoints;
@@ -156,7 +165,7 @@ public class MultiplayerActivity extends AppCompatActivity {
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 choice1Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //choice1Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 currentQuestion += 1;
                                 populateQuestion();
@@ -164,16 +173,16 @@ public class MultiplayerActivity extends AppCompatActivity {
 
                         } else {
                             //choice1Button.setBackgroundColor(Color.RED);
-                            choice1Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OUT);
-                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            choice1Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
+                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             //finalCorrectAnswer.setBackgroundColor(Color.GREEN);
                             numIncorrect += 1;
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 choice1Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 finalCorrectAnswer.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //choice1Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 //finalCorrectAnswer.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 currentQuestion += 1;
@@ -191,29 +200,29 @@ public class MultiplayerActivity extends AppCompatActivity {
                             numCorrect += 1;
                             totalPoints += currentPoints;
                             statsPlayerRef.setValue(totalPoints);
-                            choice2Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            choice2Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             //choice2Button.setBackgroundColor(Color.GREEN);
 
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 //choice2Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 choice2Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 currentQuestion += 1;
                                 populateQuestion();
                             }, 1000);
                         } else {
                             //choice2Button.setBackgroundColor(Color.RED);
-                            choice2Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OUT);
+                            choice2Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                             //finalCorrectAnswer.setBackgroundColor(Color.GREEN);
-                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             numIncorrect += 1;
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 choice2Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 finalCorrectAnswer.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //choice2Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 //finalCorrectAnswer.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 currentQuestion += 1;
@@ -229,31 +238,31 @@ public class MultiplayerActivity extends AppCompatActivity {
                         choice4Button.setClickable(false);
                         if (choice3Button == finalCorrectAnswer) {
                             //choice3Button.setBackgroundColor(Color.GREEN);
-                            choice3Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            choice3Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             numCorrect += 1;
                             totalPoints += currentPoints;
                             statsPlayerRef.setValue(totalPoints);
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 choice3Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //choice3Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 currentQuestion += 1;
                                 populateQuestion();
                             }, 1000);
                         } else {
                             //choice3Button.setBackgroundColor(Color.RED);
-                            choice3Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OUT);
+                            choice3Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                             //finalCorrectAnswer.setBackgroundColor(Color.GREEN);
-                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             numIncorrect += 1;
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 finalCorrectAnswer.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //finalCorrectAnswer.setBackgroundColor(Color.parseColor("#
                                 choice3Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //choice3Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 currentQuestion += 1;
                                 populateQuestion();
@@ -269,30 +278,30 @@ public class MultiplayerActivity extends AppCompatActivity {
                         choice4Button.setClickable(false);
                         if (choice4Button == finalCorrectAnswer) {
                             //choice4Button.setBackgroundColor(Color.GREEN);
-                            choice4Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            choice4Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             numCorrect += 1;
                             totalPoints += currentPoints;
                             statsPlayerRef.setValue(totalPoints);
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 choice4Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 currentQuestion += 1;
                                 populateQuestion();
                             }, 1000);
                         } else {
                             //choice4Button.setBackgroundColor(Color.RED);
-                            choice4Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OUT);
+                            choice4Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                             //finalCorrectAnswer.setBackgroundColor(Color.GREEN);
-                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OUT);
+                            finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                             numIncorrect += 1;
                             Handler handler = new Handler();
                             handler.postDelayed(() -> {
                                 //finalCorrectAnswer.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 finalCorrectAnswer.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 choice4Button.getBackground().setColorFilter(
-                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OUT);
+                                        Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                 //choice4Button.setBackgroundColor(Color.parseColor("#b3e5fc"));
                                 currentQuestion += 1;
                                 populateQuestion();

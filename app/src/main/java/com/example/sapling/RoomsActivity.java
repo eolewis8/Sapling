@@ -34,7 +34,7 @@ public class RoomsActivity extends AppCompatActivity {
     String roomName = "";
     FirebaseDatabase database;
     DatabaseReference roomsRef;
-    int playerHash;
+    String playerID;
     private static final String TAG = "RoomsActivity";
 
     @Override
@@ -48,7 +48,7 @@ public class RoomsActivity extends AppCompatActivity {
         roomsList = new ArrayList<>();
         SharedPreferences sharedPref =
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
-        playerHash = sharedPref.getInt("playerHash", -1);
+        playerID = sharedPref.getString("playerID", "");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,15 +59,16 @@ public class RoomsActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Rooms room = snapshot.getValue(Rooms.class);
                         if (room.getNumConnected() + 1 > room.getNumPlayers()) {
+                            roomNameRef.child("available").setValue(false);
                             Toast.makeText(getApplicationContext(), "Room is full", Toast.LENGTH_SHORT).show();
+                            roomNameRef.removeEventListener(this);
                         } else {
-                            roomNameRef.child("players/" + String.valueOf(playerHash)).setValue(String.valueOf(playerHash));
-                            roomNameRef.child("stats/" + String.valueOf(playerHash)).setValue(0);
+                            roomNameRef.child("players/" + playerID).setValue(playerID);
+                            roomNameRef.child("stats/" + playerID).setValue(0);
                             roomNameRef.child("numConnected").setValue(room.getNumConnected() + 1);
                             Intent intent = new Intent(getApplicationContext(), WaitForPlayersActivity.class);
                             intent.putExtra("roomName", roomName);
                             startActivity(intent);
-                            roomNameRef.removeEventListener(this);
                         }
                     }
 
@@ -98,7 +99,9 @@ public class RoomsActivity extends AppCompatActivity {
                 roomsList.clear();
                 Iterable<DataSnapshot> rooms = snapshot.getChildren();
                 for (DataSnapshot room: rooms) {
-                    roomsList.add(room.getKey());
+                    if (room.child("available").getValue(Boolean.class)) {
+                        roomsList.add(room.getKey());
+                    }
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(RoomsActivity.this,
                         android.R.layout.simple_list_item_1, roomsList);

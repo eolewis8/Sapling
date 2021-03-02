@@ -22,12 +22,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
     EditText emailText;
     EditText passwordText;
     FirebaseAuth firebaseAuth;
+    FirebaseDatabase database;
     private static final String DEBUG_TAG = "SignInActivity";
 
     @Override
@@ -72,7 +74,7 @@ public class SignInActivity extends AppCompatActivity {
                                         Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putBoolean("isInstructor", isInstructor == 1);
-                        editor.putInt("playerHash", emailID.hashCode());
+                        editor.putString("playerID", emailID.substring(0, emailID.indexOf("@")));
                         editor.apply();
                         startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
                     }

@@ -66,7 +66,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 "SignUp unsuccessful: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        userRef = database.getReference("users/" + emailID.hashCode());
+                        userRef = database.getReference("users/" + emailID.substring(0,
+                                emailID.indexOf("@")));
                         Users user = new Users(firstName, lastName, emailID, isInstructor);
                         userRef.setValue(user);
                         UserDbHelper dbHelper = new UserDbHelper(getApplicationContext());
@@ -91,7 +92,8 @@ public class SignUpActivity extends AppCompatActivity {
                                             Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putBoolean("isInstructor", isInstructorChecked);
-                            editor.putInt("playerHash", emailID.hashCode());
+                            editor.putString("playerID", emailID.substring(0,
+                                    emailID.indexOf("@")));
                             editor.apply();
                             startActivity(new Intent(getApplicationContext(),
                                     CategoriesActivity.class));

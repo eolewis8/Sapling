@@ -6,6 +6,8 @@ public class Users {
     private String lastName;
     private String email;
     private Integer isInstructor;
+    private int score;
+    private int avgRank;
 
     public Users() {};
 
@@ -14,6 +16,8 @@ public class Users {
         this.lastName = lastName;
         this.email = email;
         this.isInstructor = isInstructor;
+        this.score = 0;
+        this.avgRank = 0;
     }
 
     public String getFirstName() {
@@ -46,5 +50,21 @@ public class Users {
 
     public void setIsInstructor(Integer isInstructor) {
         this.isInstructor = isInstructor;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getAvgRank() {
+        return avgRank;
+    }
+
+    public void setAvgRank(int avgRank) {
+        this.avgRank = avgRank;
     }
 }

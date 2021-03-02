@@ -31,10 +31,10 @@ public class NumPlayerActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference roomRef;
     //DatabaseReference playerRef;
-    int playerHash;
     String roomName;
     long numPlayers;
     String requiredPlayers;
+    String playerID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +46,15 @@ public class NumPlayerActivity extends AppCompatActivity {
         roomRef = database.getReference("rooms/" + roomName);
         SharedPreferences sharedPref =
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
-        playerHash = sharedPref.getInt("playerHash", -1);
+        playerID = sharedPref.getString("playerID", "");
     }
 
     public void populateRoom(View view) {
         requiredPlayers = numPlayerText.getText().toString();
         Map<String, String> players = new HashMap<>();
-        players.put(String.valueOf(playerHash), String.valueOf(playerHash));
+        players.put(playerID, playerID);
         Map<String, Integer> stats = new HashMap<>();
-        stats.put(String.valueOf(playerHash), 0);
+        stats.put(playerID, 0);
         Rooms room = new Rooms(Integer.parseInt(requiredPlayers), roomName, players, stats);
         roomRef.setValue(room);
         Intent intent = new Intent(getApplicationContext(), WaitForPlayersActivity.class);
