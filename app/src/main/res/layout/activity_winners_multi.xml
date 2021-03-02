@@ -12,11 +12,10 @@
         layout="@layout/toolbar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose a Discipline"
+        android:text="Winners!!"
         android:fontFamily="@font/fredoka_one"
         android:textColor="#cad639"
         android:gravity="center"
@@ -24,6 +23,8 @@
         android:layout_marginBottom="20dp"
         android:textSize="40sp" />
 
+    <!--View to show the top 3 players and their scores -->
+    <!-- Needs a custom adapter -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

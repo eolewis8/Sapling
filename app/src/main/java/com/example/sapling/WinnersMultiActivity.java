@@ -13,11 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 
 // ToDo: Will display top 3 winners by student name
-public class WinnersActivity extends AppCompatActivity {
+public class WinnersMultiActivity extends AppCompatActivity {
 
     private List<String> categories = new ArrayList<String>(
             Arrays.asList("First", "Second", "Third"));
 
+    // Make a List of strings of their scores from firebase and add to card view
 
     private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.gold_logo,
             R.drawable.silver_logo, R.drawable.bronze_logo));
