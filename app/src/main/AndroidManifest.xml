@@ -9,28 +9,34 @@
         android:roundIcon="@drawable/sapling_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sapling">
-
-        <activity android:name=".WaitForPlayersActivity"
+        <activity android:name=".SingleOrMultiActivity"></activity>
+        <activity
+            android:name=".WaitForPlayersActivity"
             android:parentActivityName=".CategoriesActivity" />
         <activity android:name=".NumPlayerActivity" />
         <activity android:name=".RoomsActivity" />
         <activity android:name=".MultiplayerActivity" />
-        <activity android:name=".AnswerQuestionsActivity"
-            android:parentActivityName=".CategoriesActivity"/>
+        <activity
+            android:name=".AnswerQuestionsActivity"
+            android:parentActivityName=".CategoriesActivity" />
         <activity android:name=".EditQuestions" />
         <activity android:name=".DisplayQuestionsActivity" />
         <activity android:name=".AddQuestionsActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
-        <activity android:name=".ScienceCategory"
-            android:parentActivityName=".CategoriesActivity"/>
-        <activity android:name=".TechCategory"
-            android:parentActivityName=".CategoriesActivity"/>
-        <activity android:name=".EngrCategory"
-            android:parentActivityName=".CategoriesActivity"/>
-        <activity android:name=".MathCategory"
-            android:parentActivityName=".CategoriesActivity"/>
+        <activity
+            android:name=".ScienceCategory"
+            android:parentActivityName=".CategoriesActivity" />
+        <activity
+            android:name=".TechCategory"
+            android:parentActivityName=".CategoriesActivity" />
+        <activity
+            android:name=".EngrCategory"
+            android:parentActivityName=".CategoriesActivity" />
+        <activity
+            android:name=".MathCategory"
+            android:parentActivityName=".CategoriesActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

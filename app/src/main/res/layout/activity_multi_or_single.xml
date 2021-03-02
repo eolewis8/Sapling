@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="#B3E5FC"
     android:orientation="vertical"
-    tools:context="com.example.sapling.CategoriesActivity" >
+    tools:context="com.example.sapling.SingleOrMultiActivity" >
     <!-- Activity comes after you select a sub-category-->
     <!-- This activity will direct to either the game or the multi-player waiting room-->
     <include
@@ -39,6 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="25sp"
+            android:onClick="playSingleOrMultiplayerMode"
             android:text="Single Player" />
         <Button
             android:id="@+id/multi"
@@ -48,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="25sp"
+            android:onClick="playSingleOrMultiplayerMode"
             android:text="Multi-player" />
 
     </LinearLayout>

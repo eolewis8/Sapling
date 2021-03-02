@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -63,7 +64,7 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
     }
 
     public void populateQuestion() {
-        if (currentQuestion < 24) {
+        if (currentQuestion < 6) {
 
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Questions").child(currentQuestion.toString());
             databaseReference.addValueEventListener(new ValueEventListener() {
@@ -97,23 +98,26 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice1Button == finalCorrectAnswer) {
-                                choice1Button.setBackgroundColor(Color.GREEN);
+                                choice1Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numCorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    choice1Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice1Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                     }, 1000);
 
                             } else {
-                                choice1Button.setBackgroundColor(Color.RED);
-                                finalCorrectAnswer.setBackgroundColor(Color.GREEN);
+                                choice1Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
+                                finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    choice1Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
-                                    finalCorrectAnswer.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice1Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
+                                    finalCorrectAnswer.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                     }, 1000);
@@ -127,21 +131,25 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice4Button.setClickable(false);
                             if (choice2Button == finalCorrectAnswer) {
                                 numCorrect += 1;
-                                choice2Button.setBackgroundColor(Color.GREEN);
+                                choice2Button.getBackground().setColorFilter(Color.GREEN,
+                                        PorterDuff.Mode.SRC_OVER);
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    choice2Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice2Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                 }, 1000);
                             } else {
-                                choice2Button.setBackgroundColor(Color.RED);
-                                finalCorrectAnswer.setBackgroundColor(Color.GREEN);
+                                choice2Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
+                                finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    choice2Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
-                                    finalCorrectAnswer.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice2Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
+                                    finalCorrectAnswer.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                 }, 1000);
@@ -154,22 +162,25 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice3Button == finalCorrectAnswer) {
-                                choice3Button.setBackgroundColor(Color.GREEN);
+                                choice3Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numCorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    choice3Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice3Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                 }, 1000);
                             } else {
-                                choice3Button.setBackgroundColor(Color.RED);
-                                finalCorrectAnswer.setBackgroundColor(Color.GREEN);
+                                choice3Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
+                                finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    finalCorrectAnswer.setBackgroundColor(Color.parseColor("#FFB6C1"));
-                                    choice3Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice3Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
+                                    finalCorrectAnswer.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                 }, 1000);
@@ -183,22 +194,25 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice4Button == finalCorrectAnswer) {
-                                choice4Button.setBackgroundColor(Color.GREEN);
+                                choice4Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numCorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    choice4Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice4Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                 }, 1000);
                             } else {
-                                choice4Button.setBackgroundColor(Color.RED);
-                                finalCorrectAnswer.setBackgroundColor(Color.GREEN);
+                                choice4Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
+                                finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                                 numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
-                                    finalCorrectAnswer.setBackgroundColor(Color.parseColor("#FFB6C1"));
-                                    choice4Button.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                                    choice4Button.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
+                                    finalCorrectAnswer.getBackground().setColorFilter(
+                                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                                     currentQuestion += 1;
                                     populateQuestion();
                                 }, 1000);
