@@ -72,6 +72,7 @@ public class SignInActivity extends AppCompatActivity {
                                         Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putBoolean("isInstructor", isInstructor == 1);
+                        editor.putInt("playerHash", emailID.hashCode());
                         editor.apply();
                         startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
                     }

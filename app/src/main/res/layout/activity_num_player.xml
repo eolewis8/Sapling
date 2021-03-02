@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NumPlayerActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Number of Users"
+        android:id="@+id/num_players"
+        android:layout_marginTop="50dp"
+        android:inputType="number" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/num_players"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:onClick="populateRoom"
+        android:text="Enter" />
+
+
+</RelativeLayout>

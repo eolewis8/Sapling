@@ -9,7 +9,11 @@
         android:roundIcon="@drawable/sapling_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sapling">
-        <activity android:name=".AnswerQuestionsActivity"></activity>
+        <activity android:name=".WaitForPlayersActivity"></activity>
+        <activity android:name=".NumPlayerActivity" />
+        <activity android:name=".RoomsActivity" />
+        <activity android:name=".MultiplayerActivity" />
+        <activity android:name=".AnswerQuestionsActivity" />
         <activity android:name=".EditQuestions" />
         <activity android:name=".DisplayQuestionsActivity" />
         <activity android:name=".AddQuestionsActivity" />

@@ -14,16 +14,21 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.model.Users;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    EditText emailText;
-    EditText passwordText;
-    EditText firstNameText;
-    EditText lastNameText;
-    Switch instructorSwitch;
-    FirebaseAuth firebaseAuth;
+    private EditText emailText;
+    private EditText passwordText;
+    private EditText firstNameText;
+    private EditText lastNameText;
+    private Switch instructorSwitch;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference userRef;
     private static final String DEBUG_TAG = "SignUpActivity";
 
     @Override
@@ -41,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         lastNameText = findViewById(R.id.last_name);
         instructorSwitch = findViewById(R.id.switch1);
         firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
     }
 
     public void login(View view) {
@@ -50,6 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = lastNameText.getText().toString();
         Boolean isInstructorChecked = instructorSwitch.isChecked();
         Integer isInstructor = isInstructorChecked ? 1 : 0;
+        // ToDo: Add validation for inputs.
         Log.i(DEBUG_TAG, "User ID : " + emailID);
         Log.i(DEBUG_TAG, "Password: " + password);
         firebaseAuth.createUserWithEmailAndPassword(emailID, password)
@@ -59,7 +66,9 @@ public class SignUpActivity extends AppCompatActivity {
                                 "SignUp unsuccessful: " + task.getException().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     } else {
-
+                        userRef = database.getReference("users/" + emailID.hashCode());
+                        Users user = new Users(firstName, lastName, emailID, isInstructor);
+                        userRef.setValue(user);
                         UserDbHelper dbHelper = new UserDbHelper(getApplicationContext());
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
                         ContentValues contentValues = new ContentValues();
@@ -82,6 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putBoolean("isInstructor", isInstructorChecked);
+                            editor.putInt("playerHash", emailID.hashCode());
                             editor.apply();
                             startActivity(new Intent(getApplicationContext(),
                                     CategoriesActivity.class));
