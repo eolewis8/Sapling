@@ -30,25 +30,28 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
         <Button
             android:id="@+id/single"
             android:textSize="12dp"
-            android:background="#96A500"
+            android:background="@drawable/border_text_white"
+            android:backgroundTint="#96A500"
             android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="25sp"
+            android:layout_marginBottom="20dp"
             android:onClick="playSingleOrMultiplayerMode"
             android:text="Single Player" />
         <Button
             android:id="@+id/multi"
             android:textSize="12dp"
-            android:background="#C9D53A"
+            android:background="@drawable/border_text"
             android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="25sp"
+            android:layout_marginTop="20dp"
             android:onClick="playSingleOrMultiplayerMode"
             android:text="Multi-player" />
 

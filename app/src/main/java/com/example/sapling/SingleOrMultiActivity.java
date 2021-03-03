@@ -1,6 +1,7 @@
 package com.example.sapling;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,23 @@ public class SingleOrMultiActivity extends AppCompatActivity {
         Intent intent = getIntent();
         subject = intent.getStringExtra("Subject");
         title = intent.getStringExtra("Title");
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

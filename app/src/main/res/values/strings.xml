@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sapling</string>
+    <string-array name="category">
+        <item>Home</item>
+        <item>Profile</item>
+        <item>Rules</item>
+        <item>Log Out</item>
+    </string-array>
 </resources>

@@ -82,7 +82,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
             case android.R.id.home:
                 Toast.makeText(this, "Go to Categories Screen", Toast.LENGTH_SHORT);
-            //case android.R.id.go_profile:
+            // case android.R.id.go_profile:
             //    Toast.makeText(this, "Go to profile screen/stats screen", Toast.LENGTH_SHORT);
             //case android.R.id.log_out:
             //    Toast.makeText(this, "Go to Sign In", Toast.LENGTH_SHORT);
