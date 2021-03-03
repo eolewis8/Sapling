@@ -2,12 +2,15 @@ package com.example.sapling;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -80,6 +83,23 @@ public class RoomsActivity extends AppCompatActivity {
             }
         });
         populateRoomsEventListener();
+
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void createRoom(View view) {
@@ -113,5 +133,28 @@ public class RoomsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+
+            case android.R.id.home:
+                Toast.makeText(this, "Go to Categories Screen", Toast.LENGTH_SHORT);
+                // case android.R.id.go_profile:
+                //    Toast.makeText(this, "Go to profile screen/stats screen", Toast.LENGTH_SHORT);
+                //case android.R.id.log_out:
+                //    Toast.makeText(this, "Go to Sign In", Toast.LENGTH_SHORT);
+        }
+        return (super.onOptionsItemSelected(menuItem));
     }
 }
