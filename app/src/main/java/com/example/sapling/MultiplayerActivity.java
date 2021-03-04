@@ -125,7 +125,7 @@ public class MultiplayerActivity extends AppCompatActivity {
     }
 
     public void populateQuestion() {
-        if (currentQuestion < 5) {
+        if (currentQuestion < 2) {
             databaseReference = database.getReference("Questions/" + currentQuestion.toString());
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.P)
