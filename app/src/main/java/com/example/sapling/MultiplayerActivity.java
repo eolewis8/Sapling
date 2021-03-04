@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -40,7 +43,7 @@ public class MultiplayerActivity extends AppCompatActivity {
     DatabaseReference statsPlayerRef;
     DatabaseReference statsRef;
     DatabaseReference roomRef;
-    DatabaseReference userRef;
+    DatabaseReference scoreRef;
     private boolean shouldShowTimer = true;
     Integer currentQuestion = 1;
     Integer numCorrect = 0;
@@ -111,8 +114,6 @@ public class MultiplayerActivity extends AppCompatActivity {
             // ...
         });
         statsPlayerRef = database.getReference("rooms/" + roomName + "/stats/" + playerID);
-
-        userRef = database.getReference("users/" + playerID);
         populateQuestion();
     }
 
@@ -315,6 +316,10 @@ public class MultiplayerActivity extends AppCompatActivity {
 
                 }
             });
+        } else {
+            Intent intent = new Intent(getApplicationContext(), WinnersMultiActivity.class);
+            intent.putExtra("roomName", roomName);
+            startActivity(intent);
         }
     }
 

@@ -16,6 +16,7 @@
         <activity android:name=".NumPlayerActivity" />
         <activity android:name=".RoomsActivity" />
         <activity android:name=".MultiplayerActivity" />
+        <activity android:name=".WinnersMultiActivity" />
         <activity
             android:name=".AnswerQuestionsActivity"
             android:parentActivityName=".CategoriesActivity" />
