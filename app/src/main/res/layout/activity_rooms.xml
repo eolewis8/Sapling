@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!--Play with friends button-->
         <Button
             android:id="@+id/create_room"
             android:layout_width="wrap_content"

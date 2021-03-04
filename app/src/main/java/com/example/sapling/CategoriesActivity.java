@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.content.res.ResourcesCompat;
 import androidx.navigation.NavController;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,26 +67,28 @@ public class CategoriesActivity extends AppCompatActivity {
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
 
-        //ToDo: Make the back button show up again
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.back);
+        // toolbar.setNavigationIcon(R.drawable.back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });
+        }); */
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer,R.string.Open, R.string.Close);
+        drawerToggle.setHomeAsUpIndicator(R.drawable.ic_person);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null);
+        drawerToggle.setHomeAsUpIndicator(drawable);
+
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        //ToDo: Set the icon so that it shows up
 
         nv = (NavigationView)findViewById(R.id.nav_view);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -112,11 +118,16 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
 
-        return true;
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
