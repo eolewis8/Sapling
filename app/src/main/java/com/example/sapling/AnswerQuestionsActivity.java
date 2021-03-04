@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
@@ -33,12 +34,12 @@ import java.util.List;
 public class AnswerQuestionsActivity extends AppCompatActivity {
 
     private Button choice1Button, choice2Button, choice3Button, choice4Button;
-    private TextView questionText, timerText;
+    private TextView questionText, timerText, scoreText;
     DatabaseReference databaseReference;
     private boolean shouldShowTimer = true;
     Integer currentQuestion = 1;
-    Integer numCorrect = 0;
-    int numIncorrect = 0;
+    int currentPoints = 300;
+    int totalPoints = 0;
     private Button correctAnswer;
 
     @Override
@@ -52,6 +53,7 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
         choice4Button = findViewById(R.id.choice4);
         questionText = findViewById(R.id.question);
         timerText = findViewById(R.id.timer);
+        scoreText = findViewById(R.id.player_score);
         correctAnswer = choice1Button;
         populateQuestion();
     }
@@ -71,6 +73,7 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    scoreText.setText("Score: 0");
                     choice1Button.setClickable(true);
                     choice2Button.setClickable(true);
                     choice3Button.setClickable(true);
@@ -98,8 +101,9 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice1Button == finalCorrectAnswer) {
+                                totalPoints += currentPoints;
+                                scoreText.setText("Score: " + currentPoints);
                                 choice1Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numCorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice1Button.getBackground().setColorFilter(
@@ -111,7 +115,6 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             } else {
                                 choice1Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                                 finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice1Button.getBackground().setColorFilter(
@@ -130,7 +133,8 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice2Button == finalCorrectAnswer) {
-                                numCorrect += 1;
+                                totalPoints += currentPoints;
+                                scoreText.setText("Score: " + currentPoints);
                                 choice2Button.getBackground().setColorFilter(Color.GREEN,
                                         PorterDuff.Mode.SRC_OVER);
                                 Handler handler = new Handler();
@@ -143,7 +147,6 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             } else {
                                 choice2Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                                 finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice2Button.getBackground().setColorFilter(
@@ -162,8 +165,9 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice3Button == finalCorrectAnswer) {
+                                totalPoints += currentPoints;
+                                scoreText.setText("Score: " + currentPoints);
                                 choice3Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numCorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice3Button.getBackground().setColorFilter(
@@ -174,7 +178,6 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             } else {
                                 choice3Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                                 finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice3Button.getBackground().setColorFilter(
@@ -194,8 +197,9 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             choice3Button.setClickable(false);
                             choice4Button.setClickable(false);
                             if (choice4Button == finalCorrectAnswer) {
+                                totalPoints += currentPoints;
+                                scoreText.setText("Score: " + currentPoints);
                                 choice4Button.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numCorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice4Button.getBackground().setColorFilter(
@@ -206,7 +210,6 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                             } else {
                                 choice4Button.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_OVER);
                                 finalCorrectAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
-                                numIncorrect += 1;
                                 Handler handler = new Handler();
                                 handler.postDelayed(() -> {
                                     choice4Button.getBackground().setColorFilter(
@@ -227,6 +230,10 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
                 }
             });
 
+        } else {
+            Intent intent = new Intent(getApplicationContext(), WinnersSingleActivity.class);
+            intent.putExtra("totalScore", totalPoints);
+            startActivity(intent);
         }
     }
 
@@ -236,17 +243,21 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 if (shouldShowTimer) {
                     timerText.setText("Time left : " + millisUntilFinished / 1000 + "s");
+                    currentPoints -= 10;
                 } else {
+                    currentPoints = 300;
                     cancel();
                 }
             }
 
             @Override
             public void onFinish() {
-                correctAnswer.setBackgroundColor(Color.GREEN);
+                scoreText.setText("Score: 0");
+                correctAnswer.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_OVER);
                 Handler handler = new Handler();
                 handler.postDelayed(() -> {
-                    correctAnswer.setBackgroundColor(Color.parseColor("#FFB6C1"));
+                    correctAnswer.getBackground().setColorFilter(
+                            Color.parseColor("#b3e5fc"), PorterDuff.Mode.SRC_OVER);
                     currentQuestion += 1;
                     populateQuestion();
                 }, 1000);

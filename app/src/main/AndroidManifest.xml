@@ -9,13 +9,15 @@
         android:roundIcon="@drawable/sapling_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sapling">
-        <activity android:name=".SingleOrMultiActivity"></activity>
+        <activity android:name=".WinnersSingleActivity"></activity>
+        <activity android:name=".SingleOrMultiActivity" />
         <activity
             android:name=".WaitForPlayersActivity"
             android:parentActivityName=".CategoriesActivity" />
         <activity android:name=".NumPlayerActivity" />
         <activity android:name=".RoomsActivity" />
         <activity android:name=".MultiplayerActivity" />
+        <activity android:name=".WinnersMultiActivity" />
         <activity
             android:name=".AnswerQuestionsActivity"
             android:parentActivityName=".CategoriesActivity" />
