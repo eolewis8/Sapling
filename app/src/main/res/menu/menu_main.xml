@@ -2,19 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:title="Drawer"
-        app:showAsAction="always"
-        android:id="@+id/drawer"
-        android:icon="@drawable/ic_baseline_more_vert_24"
-        >
-    <menu>
+
         <item
             android:id="@+id/home"
             app:showAsAction="never"
             android:title="Home">
         </item>
-
         <item
             android:id="@+id/go_profile"
             app:showAsAction="never"
@@ -30,10 +23,5 @@
             app:showAsAction="never"
             android:title="Log Out">
         </item>
-
-    </menu>
-    </item>
-
-
 
 </menu>

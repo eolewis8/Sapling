@@ -1,8 +1,14 @@
 package com.example.sapling;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import com.google.android.material.navigation.NavigationView;
+import androidx.navigation.NavController;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,12 +28,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity {
+
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout mDrawer;
+    private NavigationView nv;
 
     private List<String> categories = new ArrayList<String>(
             Arrays.asList("Science", "Technology", "Engineering", "Maths"));
@@ -51,6 +62,8 @@ public class CategoriesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
+
+        //ToDo: Make the back button show up again
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.back);
@@ -64,30 +77,55 @@ public class CategoriesActivity extends AppCompatActivity {
             }
         });
 
+        // Find our drawer view
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = new ActionBarDrawerToggle(this, mDrawer,R.string.Open, R.string.Close);
+        mDrawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+        //ToDo: Set the icon so that it shows up
+
+        nv = (NavigationView)findViewById(R.id.nav_view);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch(id)
+                {
+                    case R.id.home:
+                        Toast.makeText(CategoriesActivity.this, "Home",Toast.LENGTH_SHORT).show();break;
+                    case R.id.go_profile:
+                        Toast.makeText(CategoriesActivity.this, "Go to Stats",Toast.LENGTH_SHORT).show();break;
+                    case R.id.rules:
+                        Toast.makeText(CategoriesActivity.this, "Rules",Toast.LENGTH_SHORT).show();break;
+                    case R.id.log_out:
+                        Toast.makeText(CategoriesActivity.this, "Log Out",Toast.LENGTH_SHORT).show();break;
+                    default:
+                        return true;
+                }
+
+                return true;
+
+            }
+        });
+
 
     }
 
-    // Menu icons are inflated just as they were with actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        if(drawerToggle.onOptionsItemSelected(item))
+            return true;
 
-            case android.R.id.home:
-                Toast.makeText(this, "Go to Categories Screen", Toast.LENGTH_SHORT);
-            // case android.R.id.go_profile:
-            //    Toast.makeText(this, "Go to profile screen/stats screen", Toast.LENGTH_SHORT);
-            //case android.R.id.log_out:
-            //    Toast.makeText(this, "Go to Sign In", Toast.LENGTH_SHORT);
-        }
-        return (super.onOptionsItemSelected(menuItem));
+        return super.onOptionsItemSelected(item);
     }
 
 }
