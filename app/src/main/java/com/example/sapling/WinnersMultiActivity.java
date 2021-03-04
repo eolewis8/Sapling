@@ -91,7 +91,7 @@ public class WinnersMultiActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int score = snapshot.getValue(Integer.class);
                 Log.i(DEBUG_TAG, "Score obtained is " + score);
-                scoreRef.setValue(ServerValue.increment(-score));
+                scoreRef.setValue(ServerValue.increment(score));
                 statsPlayerRef.removeEventListener(this);
             }
 
@@ -106,12 +106,12 @@ public class WinnersMultiActivity extends AppCompatActivity {
         userRef.orderByChild("score").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int rank = 0;
+                int rank = (int) snapshot.getChildrenCount();
                 Iterable<DataSnapshot> dataSnapshots = snapshot.getChildren();
                 for (DataSnapshot data: dataSnapshots) {
                     Users user = data.getValue(Users.class);
-                    rank += 1;
                     userRef.child(data.getKey()).child("avgRank").setValue(rank);
+                    rank -= 1;
                 }
             }
             @Override
