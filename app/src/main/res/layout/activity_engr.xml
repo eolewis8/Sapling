@@ -25,6 +25,7 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:background="@drawable/border_text_white"
+        android:elevation="8dp"
         android:textSize="40sp" />
 
     <androidx.recyclerview.widget.RecyclerView

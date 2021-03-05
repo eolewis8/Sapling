@@ -1,6 +1,7 @@
 package com.example.sapling;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
@@ -66,47 +67,61 @@ public class CategoriesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
-
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // toolbar.setNavigationIcon(R.drawable.back);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        /*toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        }); */
+        final ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer,R.string.Open, R.string.Close);
-        drawerToggle.setHomeAsUpIndicator(R.drawable.ic_person);
         drawerToggle.setDrawerIndicatorEnabled(true);
-        Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null);
-        drawerToggle.setHomeAsUpIndicator(drawable);
+
+        // Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null);
+        // drawerToggle.setHomeAsUpIndicator(drawable);
+
+        //getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_person);
 
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
+
         nv = (NavigationView)findViewById(R.id.nav_view);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            private Activity context;
+
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                this.context = context;
                 switch(id)
                 {
-                    case R.id.home:
-                        Toast.makeText(CategoriesActivity.this, "Home",Toast.LENGTH_SHORT).show();break;
-                    case R.id.go_profile:
-                        Toast.makeText(CategoriesActivity.this, "Go to Stats",Toast.LENGTH_SHORT).show();break;
-                    case R.id.rules:
-                        Toast.makeText(CategoriesActivity.this, "Rules",Toast.LENGTH_SHORT).show();break;
-                    case R.id.log_out:
-                        Toast.makeText(CategoriesActivity.this, "Log Out",Toast.LENGTH_SHORT).show();break;
+                    case R.id.go_profile: {
+                        // Go to profile screen
+                        Intent intent = new Intent(context, StatsActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case R.id.rules: {
+                        // Go to rules screen
+                        Intent intent = new Intent(context, RulesActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case R.id.log_out: {
+                        // Go to splash page
+                        Intent intent = new Intent(context, MainActivity.class);
+                        context.startActivity(intent);
+                        break;
+                    }
                     default:
                         return true;
+
                 }
 
                 return true;
