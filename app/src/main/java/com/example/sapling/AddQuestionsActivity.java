@@ -1,5 +1,6 @@
 package com.example.sapling;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -12,6 +13,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.model.Question;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddQuestionsActivity extends AppCompatActivity {
 
     EditText choice1Text;
@@ -20,6 +31,8 @@ public class AddQuestionsActivity extends AppCompatActivity {
     EditText choice4Text;
     EditText questionText;
     EditText answerText;
+    FirebaseDatabase database;
+    DatabaseReference questionRef;
     private static final String DEBUG_TAG = "AddQuestionsActivity";
 
     @Override
@@ -32,6 +45,7 @@ public class AddQuestionsActivity extends AppCompatActivity {
         choice4Text = findViewById(R.id.choice4);
         questionText = findViewById(R.id.question);
         answerText = findViewById(R.id.answer);
+        database = FirebaseDatabase.getInstance();
     }
 
     public void saveQuestionToDb(View view) {
@@ -45,32 +59,34 @@ public class AddQuestionsActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("Title");
         Log.i(DEBUG_TAG, "Add questions subject : " + subject);
         Log.i(DEBUG_TAG, "Add questions title : " + title);
-        QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_SUBJECT, subject);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_TITLE, title);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE1, choice1);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE2, choice2);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE3, choice3);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE4, choice4);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION, question);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_ANSWER, answer);
-        long recordId = db.insert(QuestionsInfoContract.Questions.TABLE_NAME,
-                null, contentValues);
-        db.close();
-        if (recordId == -1) {
-            Toast.makeText(getApplicationContext(), "Question insertion failed",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "Question added successfully!",
-                    Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, DisplayQuestionsActivity.class);
-            intent.putExtra("Subject", subject);
-            intent.putExtra("Title", title);
-            startActivity(intent);
-        }
+        questionRef = database.getReference("Questions/" + subject + "/" + title);
+        questionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Question> questions = new ArrayList<>();
+                Iterable<DataSnapshot> dataSnapshots = snapshot.getChildren();
+                for (DataSnapshot data: dataSnapshots) {
+                    Question question = data.getValue(Question.class);
+                    questions.add(question);
+                }
+                questions.add(new Question(question, answer, choice1, choice2, choice3, choice4));
+                questionRef.setValue(questions);
+                questionRef.removeEventListener(this);
+                Toast.makeText(getApplicationContext(),
+                        "Question added successfully!",
+                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), DisplayQuestionsActivity.class);
+                intent.putExtra("Subject", subject);
+                intent.putExtra("Title", title);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     // Menu icons are inflated just as they were with actionbar

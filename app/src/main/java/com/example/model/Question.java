@@ -7,21 +7,17 @@ public class Question {
     private String Choice2;
     private String Choice3;
     private String Choice4;
-    private String Subject;
-    private String Title;
 
     public Question() {};
 
     public Question(String question, String answer, String choice1, String choice2, String choice3,
-                    String choice4, String subject, String title) {
+                    String choice4) {
         Question = question;
         Answer = answer;
         Choice1 = choice1;
         Choice2 = choice2;
         Choice3 = choice3;
         Choice4 = choice4;
-        Subject = subject;
-        Title = title;
     }
 
     public String getQuestion() {
@@ -72,19 +68,4 @@ public class Question {
         Choice4 = choice4;
     }
 
-    public String getSubject() {
-        return Subject;
-    }
-
-    public void setSubject(String subject) {
-        Subject = subject;
-    }
-
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String title) {
-        Title = title;
-    }
 }

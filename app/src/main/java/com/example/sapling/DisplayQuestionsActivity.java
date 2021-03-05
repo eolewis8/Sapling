@@ -20,18 +20,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.model.Question;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class DisplayQuestionsActivity extends AppCompatActivity {
 
-    private List<Questions> questions = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
     private List<Integer> images = new ArrayList<>();
     private String subject;
     private String title;
     private static final String DEBUG_TAG = "DisplayQuestionsActivity";
-
+    FirebaseDatabase database;
+    DatabaseReference questionRef;
     private RecyclerView recyclerView;
 
     @Override
@@ -42,40 +50,44 @@ public class DisplayQuestionsActivity extends AppCompatActivity {
         title = getIntent().getStringExtra("Title");
         Log.i(DEBUG_TAG, "Chosen subject is : " + subject);
         Log.i(DEBUG_TAG, "Chosen title is : " + title);
-
+        database = FirebaseDatabase.getInstance();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String selection = QuestionsInfoContract.Questions.QUESTION_SUBJECT + " LIKE? AND " +
-                QuestionsInfoContract.Questions.QUESTION_TITLE + " LIKE?";
-        String[] selectionArgs = {"%" + subject + "%", "%" + title + "%"};
-        Cursor cursor = db.query(QuestionsInfoContract.Questions.TABLE_NAME,null,
-                selection, selectionArgs,null, null, null);
-        while(cursor.moveToNext()) {
-            int ID = cursor.getInt(cursor.getColumnIndex(QuestionsInfoContract.Questions._ID));
-            String question = cursor.getString(cursor.getColumnIndex(
-                    QuestionsInfoContract.Questions.QUESTION));
-            String answer = cursor.getString(cursor.getColumnIndex(
-                    QuestionsInfoContract.Questions.QUESTION_ANSWER));
-            String choice1 = cursor.getString(cursor.getColumnIndex(
-                    QuestionsInfoContract.Questions.QUESTION_CHOICE1));
-            String choice2 = cursor.getString(cursor.getColumnIndex(
-                    QuestionsInfoContract.Questions.QUESTION_CHOICE2));
-            String choice3 = cursor.getString(cursor.getColumnIndex(
-                    QuestionsInfoContract.Questions.QUESTION_CHOICE3));
-            String choice4 = cursor.getString(cursor.getColumnIndex(
-                    QuestionsInfoContract.Questions.QUESTION_CHOICE4));
-            questions.add(new Questions(ID, question, answer, choice1, choice2, choice3, choice4));
-            images.add(R.drawable.edit_icon);
-        }
-        db.close();
+        getQuestionFromDB();
         QuestionAdapter adapter = new QuestionAdapter(this, questions, images, subject,
                 title);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void getQuestionFromDB() {
+        questionRef = database.getReference("Questions/" + subject + "/" + title);
+        questionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                questions.clear();
+                images.clear();
+                Iterable<DataSnapshot> dataSnapshots = snapshot.getChildren();
+                for (DataSnapshot data: dataSnapshots) {
+                    Question question = data.getValue(Question.class);
+                    questions.add(question);
+                    images.add(R.drawable.edit_icon);
+                }
+                refreshRecyclerView();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void refreshRecyclerView() {
+        if (recyclerView != null && recyclerView.getAdapter() != null) {
+            QuestionAdapter adapter = (QuestionAdapter) recyclerView.getAdapter();
+            adapter.notifyNewDataAdded(questions, images);
+        }
     }
 
     public void addQuestion(View view) {
@@ -110,13 +122,13 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
     }
 
     private Activity context;
-    private List<Questions> questions;
+    private List<Question> questions;
     private List<Integer> images;
     private String subject;
     private String title;
 
 
-    public QuestionAdapter(Activity context, List<Questions> questions, List<Integer> images,
+    public QuestionAdapter(Activity context, List<Question> questions, List<Integer> images,
                            String subject, String title) {
         this.context = context;
         this.questions = questions;
@@ -138,7 +150,7 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
         holder.image.setClickable(true);
         holder.image.setOnClickListener(v -> {
             Intent intent = new Intent(context, EditQuestions.class);
-            intent.putExtra("ID", questions.get(position).getID());
+            intent.putExtra("ID", position);
             intent.putExtra("Question", questions.get(position).getQuestion());
             intent.putExtra("Answer", questions.get(position).getAnswer());
             intent.putExtra("Choice1", questions.get(position).getChoice1());
@@ -155,5 +167,12 @@ class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewH
     @Override
     public int getItemCount() {
         return questions.size();
+    }
+
+    public void notifyNewDataAdded(List<Question> questions, List<Integer> images)
+    {
+        this.questions = questions;
+        this.images = images;
+        notifyDataSetChanged();
     }
 }

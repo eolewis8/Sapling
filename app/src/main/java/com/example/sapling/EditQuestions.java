@@ -1,5 +1,6 @@
 package com.example.sapling;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -12,6 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.view.Menu;
 
+import com.example.model.Question;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class EditQuestions extends AppCompatActivity {
 
     EditText choice1Text;
@@ -23,6 +31,8 @@ public class EditQuestions extends AppCompatActivity {
     private String ID;
     private String subject;
     private String title;
+    FirebaseDatabase database;
+    DatabaseReference questionRef;
     private static final String DEBUG_TAG = "EditQuestions";
 
     @Override
@@ -45,6 +55,7 @@ public class EditQuestions extends AppCompatActivity {
         choice2Text.setText(intent.getStringExtra("Choice2"));
         choice3Text.setText(intent.getStringExtra("Choice3"));
         choice4Text.setText(intent.getStringExtra("Choice4"));
+        database = FirebaseDatabase.getInstance();
     }
 
     public void saveQuestionToDb(View view) {
@@ -58,32 +69,27 @@ public class EditQuestions extends AppCompatActivity {
         Log.i(DEBUG_TAG, "Choice 3: " + choice3);
         Log.i(DEBUG_TAG, "Choice 4: " + choice4);
         String answer = answerText.getText().toString();
-        QuestionsDbHelper dbHelper = new QuestionsDbHelper(getApplicationContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE1, choice1);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE2, choice2);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE3, choice3);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_CHOICE4, choice4);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION, question);
-        contentValues.put(QuestionsInfoContract.Questions.QUESTION_ANSWER, answer);
-        String whereClause = QuestionsInfoContract.Questions._ID + "=?";
-        String[] whereArgs = {ID};
-        int count = db.update(QuestionsInfoContract.Questions.TABLE_NAME, contentValues,
-                whereClause, whereArgs);
-        Log.i(DEBUG_TAG, "Count : " + count);
-        db.close();
-        if (count < 1) {
-            Toast.makeText(getApplicationContext(), "No records updated",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "Successfully updated question!",
-                    Toast.LENGTH_SHORT).show();
-        }
-        Intent intent = new Intent(this, DisplayQuestionsActivity.class);
-        intent.putExtra("Subject", subject);
-        intent.putExtra("Title", title);
-        startActivity(intent);
+        questionRef = database.getReference("Questions/" + subject + "/" + title + "/" + ID);
+        questionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Question newQuestion = new Question(question, answer, choice1, choice2, choice3,
+                        choice4);
+                questionRef.setValue(newQuestion);
+                questionRef.removeEventListener(this);
+                Toast.makeText(getApplicationContext(), "Successfully updated question!",
+                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), DisplayQuestionsActivity.class);
+                intent.putExtra("Subject", subject);
+                intent.putExtra("Title", title);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

@@ -109,7 +109,6 @@ public class WinnersMultiActivity extends AppCompatActivity {
                 int rank = (int) snapshot.getChildrenCount();
                 Iterable<DataSnapshot> dataSnapshots = snapshot.getChildren();
                 for (DataSnapshot data: dataSnapshots) {
-                    Users user = data.getValue(Users.class);
                     userRef.child(data.getKey()).child("avgRank").setValue(rank);
                     rank -= 1;
                 }

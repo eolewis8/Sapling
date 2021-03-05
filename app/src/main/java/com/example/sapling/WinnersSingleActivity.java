@@ -68,9 +68,11 @@ public class WinnersSingleActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int rank = (int) snapshot.getChildrenCount();
                 Iterable<DataSnapshot> dataSnapshots = snapshot.getChildren();
+                Log.d(DEBUG_TAG, "Player ID: " + playerID);
                 for (DataSnapshot data: dataSnapshots) {
                     Users user = data.getValue(Users.class);
                     String emailID = user.getEmail();
+
                     if (emailID.substring(0, emailID.indexOf("@")).equals(playerID)) {
                         scoreText.setText("Total score: " + score + "\n\nGlobal Rank: " + rank);
                     }

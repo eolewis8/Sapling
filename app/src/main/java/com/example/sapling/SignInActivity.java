@@ -18,11 +18,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.model.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -30,6 +35,7 @@ public class SignInActivity extends AppCompatActivity {
     EditText passwordText;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase database;
+    DatabaseReference userRef;
     private static final String DEBUG_TAG = "SignInActivity";
 
     @Override
@@ -40,6 +46,7 @@ public class SignInActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         emailText = findViewById(R.id.et_email);
         emailText.requestFocus();
+        database = FirebaseDatabase.getInstance();
         passwordText = findViewById(R.id.et_password);
 
     }
@@ -57,26 +64,7 @@ public class SignInActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(),
                                 "Login successful", Toast.LENGTH_SHORT).show();
-                        UserDbHelper dbHelper = new UserDbHelper(getApplicationContext());
-                        SQLiteDatabase db = dbHelper.getReadableDatabase();
-                        String[] columns = {UsersInfoContract.Users.IS_INSTRUCTOR};
-                        String selection = UsersInfoContract.Users.USER_EMAIL + " LIKE? ";
-                        String[] selectionArgs = {"%" + emailID + "%"};
-                        Cursor cursor = db.query(UsersInfoContract.Users.TABLE_NAME,columns,
-                                selection,selectionArgs,null, null, null);
-                        cursor.moveToFirst();
-                        int isInstructor =
-                                cursor.getInt(cursor.getColumnIndex(UsersInfoContract.Users.IS_INSTRUCTOR));
-                        Log.i(DEBUG_TAG, "Instructor : " + isInstructor);
-                        db.close();
-                        SharedPreferences sharedPref =
-                                getApplicationContext().getSharedPreferences("sapling",
-                                        Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putBoolean("isInstructor", isInstructor == 1);
-                        editor.putString("playerID", emailID.substring(0, emailID.indexOf("@")));
-                        editor.apply();
-                        startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
+                        setInstructor();
                     }
                 });
     }
@@ -87,6 +75,32 @@ public class SignInActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void setInstructor() {
+        String user = Util.getCurrentUser();
+        userRef = database.getReference("users/" + user);
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users user = snapshot.getValue(Users.class);
+                SharedPreferences sharedPref =
+                        getApplicationContext().getSharedPreferences("sapling",
+                                Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("isInstructor", user.getIsInstructor() == 1);
+                editor.putString("playerID", Util.getCurrentUser());
+                editor.apply();
+                startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 }

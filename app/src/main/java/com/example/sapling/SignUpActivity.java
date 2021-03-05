@@ -56,9 +56,12 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = lastNameText.getText().toString();
         Boolean isInstructorChecked = instructorSwitch.isChecked();
         Integer isInstructor = isInstructorChecked ? 1 : 0;
-        // ToDo: Add validation for inputs.
-        Log.i(DEBUG_TAG, "User ID : " + emailID);
-        Log.i(DEBUG_TAG, "Password: " + password);
+        // Check for invalid inputs
+        if (emailID.isEmpty() || password.isEmpty()) {
+            Toast.makeText(getApplicationContext(),"Email and password cannot be empty",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         firebaseAuth.createUserWithEmailAndPassword(emailID, password)
                 .addOnCompleteListener(this, task -> {
                     if (!task.isSuccessful()) {
@@ -70,34 +73,19 @@ public class SignUpActivity extends AppCompatActivity {
                                 emailID.indexOf("@")));
                         Users user = new Users(firstName, lastName, emailID, isInstructor);
                         userRef.setValue(user);
-                        UserDbHelper dbHelper = new UserDbHelper(getApplicationContext());
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put(UsersInfoContract.Users.USER_FIRST_NAME, firstName);
-                        contentValues.put(UsersInfoContract.Users.USER_LAST_NAME, lastName);
-                        contentValues.put(UsersInfoContract.Users.USER_EMAIL, emailID);
-                        contentValues.put(UsersInfoContract.Users.IS_INSTRUCTOR, isInstructor);
-                        long recordId = db.insert(UsersInfoContract.Users.TABLE_NAME,
-                                null, contentValues);
-                        db.close();
-                        if (recordId == -1) {
-                            Toast.makeText(getApplicationContext(), "User insertion failed",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    "User registered successfully!",
-                                    Toast.LENGTH_SHORT).show();
-                            SharedPreferences sharedPref =
-                                    getApplicationContext().getSharedPreferences("sapling",
-                                            Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putBoolean("isInstructor", isInstructorChecked);
-                            editor.putString("playerID", emailID.substring(0,
+
+                        Toast.makeText(getApplicationContext(), "User registered successfully!",
+                                Toast.LENGTH_SHORT).show();
+                        SharedPreferences sharedPref =
+                                getApplicationContext().getSharedPreferences("sapling",
+                                        Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putBoolean("isInstructor", isInstructorChecked);
+                        editor.putString("playerID", emailID.substring(0,
                                     emailID.indexOf("@")));
-                            editor.apply();
-                            startActivity(new Intent(getApplicationContext(),
-                                    CategoriesActivity.class));
-                        }
+                        editor.apply();
+                        startActivity(new Intent(getApplicationContext(),
+                                CategoriesActivity.class));
                     }
                 });
     }
