@@ -41,7 +41,7 @@ public class CategoriesActivity extends AppCompatActivity {
     private NavigationView nv;
 
     private List<String> categories = new ArrayList<String>(
-            Arrays.asList("Science", "Technology", "Engineering", "Maths"));
+            Arrays.asList("Science", "Technology", "Engineering", "Math"));
 
     private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.science_logo,
             R.drawable.tech_logo, R.drawable.engr_logo, R.drawable.math_logo));

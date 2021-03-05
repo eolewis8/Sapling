@@ -22,7 +22,7 @@ public class WaitForPlayersActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference playersRef;
     DatabaseReference roomRef;
-    String roomName;
+    String roomName, subject, title;
     long currentPlayers;
     TextView playerText;
 
@@ -35,6 +35,9 @@ public class WaitForPlayersActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         roomName = getIntent().getStringExtra("roomName");
         roomRef = database.getReference("rooms/" + roomName);
+        Intent intent = getIntent();
+        subject = intent.getStringExtra("Subject");
+        title = intent.getStringExtra("Title");
         addPlayersEventListener();
     }
 
@@ -48,6 +51,8 @@ public class WaitForPlayersActivity extends AppCompatActivity {
                     roomRef.removeEventListener(this);
                     Intent intent = new Intent(getApplicationContext(), MultiplayerActivity.class);
                     intent.putExtra("roomName", roomName);
+                    intent.putExtra("Subject", subject);
+                    intent.putExtra("Title", title);
                     startActivity(intent);
                 } else {
                     long numPlayers = room.getNumPlayers() - room.getNumConnected();

@@ -29,18 +29,28 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class AnswerQuestionsActivity extends AppCompatActivity {
 
     private Button choice1Button, choice2Button, choice3Button, choice4Button;
     private TextView questionText, timerText, scoreText;
-    DatabaseReference databaseReference;
+    DatabaseReference categoryRef, questionRef;
+    FirebaseDatabase database;
     private boolean shouldShowTimer = true;
-    Integer currentQuestion = 1;
+    Integer currentQuestion = 0;
     int currentPoints = 300;
     int totalPoints = 0;
+    int totalQuestions = 0;
+    private String subject;
+    private String title;
     private Button correctAnswer;
+    private static final String DEBUG_TAG = "AnswerQuestionsActivity";
+    private List<Integer> questionNumbers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,7 +65,12 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
         timerText = findViewById(R.id.timer);
         scoreText = findViewById(R.id.player_score);
         correctAnswer = choice1Button;
-        populateQuestion();
+        database = FirebaseDatabase.getInstance();
+        Intent intent = getIntent();
+        subject = intent.getStringExtra("Subject");
+        title = intent.getStringExtra("Title");
+        categoryRef = database.getReference("Questions/" + subject + "/" + title + "/");
+        getTotalQuestions();
     }
 
     @Override
@@ -65,11 +80,34 @@ public class AnswerQuestionsActivity extends AppCompatActivity {
         return true;
     }
 
-    public void populateQuestion() {
-        if (currentQuestion < 6) {
+    private void getTotalQuestions() {
+        categoryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                totalQuestions = (int) snapshot.getChildrenCount();
+                Log.d(DEBUG_TAG, "Question count : " + totalQuestions);
+                int count = (totalQuestions > 5) ? 5 : totalQuestions;
+                while (questionNumbers.size() != count) {
+                    int random = new Random().nextInt(totalQuestions);
+                    if (!questionNumbers.contains(random)) {
+                        questionNumbers.add(random);
+                    }
+                }
+                populateQuestion();
+            }
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Questions").child(currentQuestion.toString());
-            databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void populateQuestion() {
+        if (currentQuestion < questionNumbers.size()) {
+            questionRef = database.getReference("Questions/" + subject + "/" + title + "/"
+                    + questionNumbers.get(currentQuestion).toString());
+            questionRef.addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

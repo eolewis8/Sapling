@@ -37,7 +37,7 @@ public class RoomsActivity extends AppCompatActivity {
     String roomName = "";
     FirebaseDatabase database;
     DatabaseReference roomsRef;
-    String playerID;
+    String playerID, subject, title;
     private static final String TAG = "RoomsActivity";
 
     @Override
@@ -52,6 +52,8 @@ public class RoomsActivity extends AppCompatActivity {
         SharedPreferences sharedPref =
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
         playerID = sharedPref.getString("playerID", "");
+        subject = getIntent().getStringExtra("Subject");
+        title = getIntent().getStringExtra("Title");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -71,6 +73,8 @@ public class RoomsActivity extends AppCompatActivity {
                             roomNameRef.child("numConnected").setValue(room.getNumConnected() + 1);
                             Intent intent = new Intent(getApplicationContext(), WaitForPlayersActivity.class);
                             intent.putExtra("roomName", roomName);
+                            intent.putExtra("Subject", subject);
+                            intent.putExtra("Title", title);
                             startActivity(intent);
                         }
                     }
@@ -108,6 +112,8 @@ public class RoomsActivity extends AppCompatActivity {
         roomName = newRoomRef.getKey();
         Intent intent = new Intent(getApplicationContext(), NumPlayerActivity.class);
         intent.putExtra("roomName", roomName);
+        intent.putExtra("Subject", subject);
+        intent.putExtra("Title", title);
         startActivity(intent);
     }
 

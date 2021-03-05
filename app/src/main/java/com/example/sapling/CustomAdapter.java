@@ -48,7 +48,7 @@ class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CategoryViewHolde
                             intent.putExtra("Subject", name.getText().toString());
                             context.startActivity(intent);
                         }
-                        if (name.getText().toString().equals("Maths")) {
+                        if (name.getText().toString().equals("Math")) {
                             Intent intent = new Intent(context, MathCategory.class);
                             intent.putExtra("Subject", name.getText().toString());
                             context.startActivity(intent);

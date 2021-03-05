@@ -30,8 +30,11 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 
 public class MultiplayerActivity extends AppCompatActivity {
@@ -39,19 +42,23 @@ public class MultiplayerActivity extends AppCompatActivity {
     private Button choice1Button, choice2Button, choice3Button, choice4Button;
     private TextView questionText, timerText, scoreText;
     FirebaseDatabase database;
-    DatabaseReference databaseReference;
+    DatabaseReference questionRef, categoryRef;
     DatabaseReference statsPlayerRef;
     DatabaseReference statsRef;
     DatabaseReference roomRef;
     private boolean shouldShowTimer = true;
-    Integer currentQuestion = 1;
+    Integer currentQuestion = 0;
     private Button correctAnswer;
     String playerID;
     String roomName;
     int currentPoints = 300;
     int totalPoints = 0;
+    int totalQuestions = 0;
+    private String subject;
+    private String title;
     private static final String DEBUG_TAG = "MultiplayerActivity";
-    Map<String, Integer> playerToPointsMap = new HashMap<>();
+    private List<Integer> questionNumbers = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -70,9 +77,56 @@ public class MultiplayerActivity extends AppCompatActivity {
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
         playerID = sharedPref.getString("playerID", "");
         database = FirebaseDatabase.getInstance();
-        playerToPointsMap.put(playerID, 0);
         roomName = getIntent().getStringExtra("roomName");
         statsRef = database.getReference("rooms/" + roomName + "/stats/");
+        updateHighScore();
+        statsPlayerRef = database.getReference("rooms/" + roomName + "/stats/" + playerID);
+        Intent intent = getIntent();
+        subject = intent.getStringExtra("Subject");
+        title = intent.getStringExtra("Title");
+        Log.d(DEBUG_TAG, "Subject : " + subject);
+        Log.d(DEBUG_TAG, "Title : " + title);
+        categoryRef = database.getReference("Questions/" + subject + "/" + title + "/");
+        getTotalQuestions();
+        //populateQuestion();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    private void getTotalQuestions() {
+        categoryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                totalQuestions = (int) snapshot.getChildrenCount();
+                Log.d(DEBUG_TAG, "Question count : " + totalQuestions);
+                int count = (totalQuestions > 5) ? 5 : totalQuestions;
+                int randomCount = 0;
+                while (questionNumbers.size() != count) {
+                    Random rand = new Random(roomName.hashCode() + randomCount);
+                    int random = rand.nextInt(totalQuestions);
+                    Log.d(DEBUG_TAG, "Random number : " + random);
+                    if (!questionNumbers.contains(random)) {
+                        questionNumbers.add(random);
+                    }
+                    randomCount += 1;
+                }
+                Log.d(DEBUG_TAG, "Question numbers: " + questionNumbers.toString());
+                populateQuestion();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void updateHighScore() {
         roomRef = database.getReference("rooms/" + roomName);
         statsRef.orderByValue().limitToLast(1).addChildEventListener(new ChildEventListener() {
             @Override
@@ -111,21 +165,14 @@ public class MultiplayerActivity extends AppCompatActivity {
 
             // ...
         });
-        statsPlayerRef = database.getReference("rooms/" + roomName + "/stats/" + playerID);
-        populateQuestion();
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     public void populateQuestion() {
-        if (currentQuestion < 2) {
-            databaseReference = database.getReference("Questions/" + currentQuestion.toString());
-            databaseReference.addValueEventListener(new ValueEventListener() {
+        if (currentQuestion < questionNumbers.size()) {
+            questionRef = database.getReference("Questions/" + subject + "/" + title + "/"
+                    + questionNumbers.get(currentQuestion).toString());
+            questionRef.addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.P)
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

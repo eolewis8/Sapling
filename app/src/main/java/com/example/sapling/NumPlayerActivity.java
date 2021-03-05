@@ -31,7 +31,7 @@ public class NumPlayerActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference roomRef;
     //DatabaseReference playerRef;
-    String roomName;
+    String roomName, subject, title;
     long numPlayers;
     String requiredPlayers;
     String playerID;
@@ -47,6 +47,9 @@ public class NumPlayerActivity extends AppCompatActivity {
         SharedPreferences sharedPref =
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
         playerID = sharedPref.getString("playerID", "");
+        Intent intent = getIntent();
+        subject = intent.getStringExtra("Subject");
+        title = intent.getStringExtra("Title");
     }
 
     public void populateRoom(View view) {
@@ -59,6 +62,8 @@ public class NumPlayerActivity extends AppCompatActivity {
         roomRef.setValue(room);
         Intent intent = new Intent(getApplicationContext(), WaitForPlayersActivity.class);
         intent.putExtra("roomName", roomName);
+        intent.putExtra("Subject", subject);
+        intent.putExtra("Title", title);
         startActivity(intent);
     }
 }
