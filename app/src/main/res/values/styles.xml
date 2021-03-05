@@ -6,6 +6,8 @@
         <item name="colorPrimary">#C9D53A</item>
         <item name="colorPrimaryDark">#96A500</item>
         <item name="colorAccent">#B3E5FC</item>
+
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat">
@@ -19,5 +21,12 @@
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/fredoka_one</item>
+    </style>
+
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_baseline_more_vert_24</item>
+        <item name="android:background">?android:attr/actionBarItemBackground</item>
+        <item name="android:contentDescription">"Dropdown menu"</item>
     </style>
 </resources>
