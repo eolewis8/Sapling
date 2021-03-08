@@ -23,6 +23,7 @@
             android:parentActivityName=".CategoriesActivity" />
         <activity android:name=".EditQuestions" />
         <activity android:name=".DisplayQuestionsActivity" />
+        <activity android:name=".StatsActivity" />
         <activity android:name=".AddQuestionsActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".SignUpActivity" />

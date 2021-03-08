@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:padding="25sp"
             android:layout_marginBottom="20dp"
+            android:elevation="4dp"
             android:onClick="playSingleOrMultiplayerMode"
             android:text="Single Player" />
         <Button
@@ -54,6 +55,7 @@
             android:layout_height="wrap_content"
             android:padding="25sp"
             android:layout_marginTop="20dp"
+            android:elevation="4dp"
             android:onClick="playSingleOrMultiplayerMode"
             android:text="Multi-player" />
 

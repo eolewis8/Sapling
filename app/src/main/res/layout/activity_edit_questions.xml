@@ -7,6 +7,10 @@
     android:background="#B3E5FC"
     tools:context=".EditQuestions">
 
+    <include
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/editquestion"
         android:layout_width="wrap_content"
@@ -17,7 +21,7 @@
         android:textColor="#6B8E23"
         android:textSize="40sp"
         android:textStyle="bold"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

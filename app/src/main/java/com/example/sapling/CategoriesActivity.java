@@ -72,9 +72,11 @@ public class CategoriesActivity extends AppCompatActivity {
 
         final ActionBar actionBar = getSupportActionBar();
 
+
+
         // ToDo: Figure out how why the menu icon is not showing up
-        // actionBar.setDisplayHomeAsUpEnabled(true);
-        // actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -85,8 +87,6 @@ public class CategoriesActivity extends AppCompatActivity {
 
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-
-
 
     }
 
@@ -108,6 +108,7 @@ public class CategoriesActivity extends AppCompatActivity {
         // The action bar home/up action should open or close the drawer.
 
         int id = item.getItemId();
+        Log.i(TAG, "Enter the switch here:" + id);
         switch (id) {
             case R.id.home: {
                 Intent intent = new Intent(this, CategoriesActivity.class);
@@ -129,14 +130,21 @@ public class CategoriesActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             }
-            default:
-                return super.onOptionsItemSelected(item);
+            default:{
+                Intent intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            }
         }
 
         return super.onOptionsItemSelected(item);
 
     }
 
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_slide, menu);
+        return true;
+    }
 }
