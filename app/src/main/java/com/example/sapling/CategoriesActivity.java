@@ -41,6 +41,7 @@ import java.util.List;
 
 public class CategoriesActivity extends AppCompatActivity {
 
+    private static final String TAG = "CategoriesActivity";
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout mDrawer;
     private NavigationView nv;
@@ -71,9 +72,9 @@ public class CategoriesActivity extends AppCompatActivity {
 
         final ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
-
+        // ToDo: Figure out how why the menu icon is not showing up
+        // actionBar.setDisplayHomeAsUpEnabled(true);
+        // actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
 
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,53 +82,10 @@ public class CategoriesActivity extends AppCompatActivity {
         drawerToggle.setDrawerIndicatorEnabled(true);
 
         // Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null);
-        // drawerToggle.setHomeAsUpIndicator(drawable);
-
-        //getSupportActionBar().setHomeButtonEnabled(true);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_person);
 
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-
-        nv = (NavigationView)findViewById(R.id.nav_view);
-        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            private Activity context;
-
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                this.context = context;
-                switch(id)
-                {
-                    case R.id.go_profile: {
-                        // Go to profile screen
-                        Intent intent = new Intent(context, StatsActivity.class);
-                        context.startActivity(intent);
-                        break;
-                    }
-                    case R.id.rules: {
-                        // Go to rules screen
-                        Intent intent = new Intent(context, RulesActivity.class);
-                        context.startActivity(intent);
-                        break;
-                    }
-                    case R.id.log_out: {
-                        // Go to splash page
-                        Intent intent = new Intent(context, MainActivity.class);
-                        context.startActivity(intent);
-                        break;
-                    }
-                    default:
-                        return true;
-
-                }
-
-                return true;
-
-            }
-        });
 
 
     }
@@ -148,10 +106,37 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
-        if(drawerToggle.onOptionsItemSelected(item))
-            return true;
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.home: {
+                Intent intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.go_profile: {
+                Intent intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.rules: {
+                Intent intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.log_out: {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
         return super.onOptionsItemSelected(item);
+
     }
+
+
 
 }

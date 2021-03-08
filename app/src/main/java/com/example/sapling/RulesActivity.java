@@ -2,6 +2,13 @@ package com.example.sapling;
 
 import android.os.Bundle;
 
-public class RulesActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
+public class RulesActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_rules);
+    }
 }

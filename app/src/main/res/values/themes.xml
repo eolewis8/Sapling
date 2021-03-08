@@ -15,6 +15,7 @@
         <item name="toolbarStyle">@style/Custom.Widget.Toolbar</item>
         <item name="toolbarNavigationButtonStyle">@style/Custom.Widget.Toolbar.Button.Navigation</item>
     </style>
+
     <style name="myActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">24dp</item>
         <item name="android:maxWidth">40dp</item>
