@@ -18,7 +18,7 @@ import java.util.List;
 public class TechCategory extends AppCompatActivity {
 
     private List<String> categories = new ArrayList<String>(
-            Arrays.asList("C", "Java", "Python", "Kotlin"));
+            Arrays.asList("C", "Java", "Python", "SQL"));
 
     private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.c_logo,
             R.drawable.java_logo, R.drawable.python_logo, R.drawable.kotlin_logo));
