@@ -15,7 +15,7 @@
             android:background="#B3E5FC"
             android:orientation="vertical"
             android:fitsSystemWindows="true"
-            tools:context=".AddQuestionsActivity">
+            tools:context=".CategoriesActivity">
 
             <include
                 layout="@layout/toolbar_main"

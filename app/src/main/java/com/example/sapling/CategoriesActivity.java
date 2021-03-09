@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CategoriesActivity extends AppCompatActivity {
+public class CategoriesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private static final String TAG = "CategoriesActivity";
     private ActionBarDrawerToggle drawerToggle;
@@ -88,6 +88,9 @@ public class CategoriesActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -104,17 +107,16 @@ public class CategoriesActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_slide, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        Log.i(TAG, "Enter the switch here:" + id);
         switch (id) {
-            case R.id.home: {
-                Intent intent = new Intent(this, CategoriesActivity.class);
-                startActivity(intent);
-                break;
-            }
             case R.id.go_profile: {
                 Intent intent = new Intent(this, StatsActivity.class);
                 startActivity(intent);
@@ -138,13 +140,5 @@ public class CategoriesActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_slide, menu);
-        return true;
     }
 }
