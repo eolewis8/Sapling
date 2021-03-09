@@ -12,13 +12,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <EditText
 
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Number of Users"
-        android:id="@+id/num_players"
+        android:text="How many players?"
+        android:fontFamily="@font/fredoka_one"
+        android:textColor="#cad639"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginBottom="50dp"
         android:layout_marginTop="70dp"
+        android:layout_gravity="center"
+        android:background="@drawable/border_text_white"
+        android:elevation="8dp"
+        android:textSize="40sp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Number of players"
+        android:id="@+id/num_players"
+        android:layout_marginTop="140dp"
         android:inputType="number" />
 
     <Button
@@ -30,7 +45,9 @@
         android:layout_marginTop="10dp"
         android:onClick="populateRoom"
         android:background="@drawable/border_text"
-        android:text="Enter" />
+        android:text="Enter"
+        android:textAllCaps="false"
+        android:elevation="4dp"/>
 
 
 </RelativeLayout>

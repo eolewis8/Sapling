@@ -17,12 +17,26 @@
         android:layout_marginTop="60dp"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select a room"
+            android:fontFamily="@font/fredoka_one"
+            android:textColor="#cad639"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border_text_white"
+            android:elevation="8dp"
+            android:textSize="40sp" />
+
         <ListView
             android:id="@+id/room_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!--Play with friends button-->
         <Button
             android:id="@+id/create_room"
             android:layout_width="wrap_content"
@@ -32,17 +46,9 @@
             android:layout_gravity="center"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:onClick="createRoom" />
-        <Button
-            android:id="@+id/link_room"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Link to Room"
-            android:background="@drawable/border_text"
-            android:layout_gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:onClick="linkToRoom" />
+            android:onClick="createRoom"
+            android:textAllCaps="false"
+            android:elevation="4dp"/>
+
     </LinearLayout>
 </RelativeLayout>

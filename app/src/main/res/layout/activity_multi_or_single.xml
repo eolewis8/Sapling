@@ -45,7 +45,8 @@
             android:layout_marginBottom="20dp"
             android:elevation="4dp"
             android:onClick="playSingleOrMultiplayerMode"
-            android:text="Single Player" />
+            android:text="Single Player"
+            android:textAllCaps="false"/>
         <Button
             android:id="@+id/multi"
             android:textSize="12dp"
@@ -57,7 +58,8 @@
             android:layout_marginTop="20dp"
             android:elevation="4dp"
             android:onClick="playSingleOrMultiplayerMode"
-            android:text="Multi-player" />
+            android:text="Multi-player"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 </RelativeLayout>
