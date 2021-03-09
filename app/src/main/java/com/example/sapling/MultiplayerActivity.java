@@ -189,7 +189,9 @@ public class MultiplayerActivity extends AppCompatActivity {
                     choice2Button.setText(question.getChoice2());
                     choice3Button.setText(question.getChoice3());
                     choice4Button.setText(question.getChoice4());
-                    if (choice2Button.getText().toString().equals(question.getAnswer())) {
+                    if (choice1Button.getText().toString().equals(question.getAnswer())) {
+                        correctAnswer = choice1Button;
+                    } else if (choice2Button.getText().toString().equals(question.getAnswer())) {
                         correctAnswer = choice2Button;
                     } else if (choice3Button.getText().toString().equals(question.getAnswer())) {
                         correctAnswer = choice3Button;
