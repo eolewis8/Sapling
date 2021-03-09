@@ -85,7 +85,8 @@ public class NumPlayerActivity extends AppCompatActivity {
         players.put(playerID, playerID);
         Map<String, Integer> stats = new HashMap<>();
         stats.put(playerID, 0);
-        Rooms room = new Rooms(Integer.parseInt(requiredPlayers), roomName, players, stats);
+        String readableRoomName = title + "-" + playerID;
+        Rooms room = new Rooms(Integer.parseInt(requiredPlayers), readableRoomName, players, stats);
         roomRef.setValue(room);
         Intent intent = new Intent(getApplicationContext(), WaitForPlayersActivity.class);
         intent.putExtra("roomName", roomName);

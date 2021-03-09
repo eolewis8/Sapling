@@ -34,6 +34,7 @@ public class RoomsActivity extends AppCompatActivity {
 
     ListView listView;
     List<String> roomsList;
+    List<String> roomIds;
     String roomName = "";
     FirebaseDatabase database;
     DatabaseReference roomsRef;
@@ -49,6 +50,7 @@ public class RoomsActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.room_list);
         roomsList = new ArrayList<>();
+        roomIds = new ArrayList<>();
         SharedPreferences sharedPref =
                 this.getSharedPreferences("sapling", Context.MODE_PRIVATE);
         playerID = sharedPref.getString("playerID", "");
@@ -57,7 +59,8 @@ public class RoomsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                roomName = roomsList.get(position);
+                roomName = roomIds.get(position);
+                Log.d(TAG, "Room name : " + roomName);
                 DatabaseReference roomNameRef = database.getReference("rooms/" + roomName);
                 roomNameRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -123,14 +126,16 @@ public class RoomsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 roomsList.clear();
+                roomIds.clear();
                 Iterable<DataSnapshot> rooms = snapshot.getChildren();
                 for (DataSnapshot room: rooms) {
                     if (room.child("available").getValue(Boolean.class)) {
-                        roomsList.add(room.getKey());
+                        roomsList.add(room.child("roomName").getValue().toString());
+                        roomIds.add(room.getKey());
                     }
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(RoomsActivity.this,
-                        android.R.layout.simple_list_item_1, roomsList);
+                        R.layout.text_style, roomsList);
                 listView.setAdapter(adapter);
             }
 

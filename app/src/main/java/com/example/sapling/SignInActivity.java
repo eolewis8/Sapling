@@ -90,6 +90,7 @@ public class SignInActivity extends AppCompatActivity {
                 editor.putBoolean("isInstructor", user.getIsInstructor() == 1);
                 editor.putString("playerID", Util.getCurrentUser());
                 editor.apply();
+                userRef.removeEventListener(this);
                 startActivity(new Intent(getApplicationContext(), CategoriesActivity.class));
             }
 
