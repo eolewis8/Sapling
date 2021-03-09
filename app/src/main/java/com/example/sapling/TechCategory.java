@@ -21,7 +21,7 @@ public class TechCategory extends AppCompatActivity {
             Arrays.asList("C", "Java", "Python", "SQL"));
 
     private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.c_logo,
-            R.drawable.java_logo, R.drawable.python_logo, R.drawable.kotlin_logo));
+            R.drawable.java_logo, R.drawable.python_logo, R.drawable.my_logo));
 
     private RecyclerView recyclerView;
 
