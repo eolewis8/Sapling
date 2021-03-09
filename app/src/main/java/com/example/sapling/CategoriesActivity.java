@@ -39,12 +39,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CategoriesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class CategoriesActivity extends AppCompatActivity {
 
     private static final String TAG = "CategoriesActivity";
-    private ActionBarDrawerToggle drawerToggle;
-    private DrawerLayout mDrawer;
-    private NavigationView nv;
 
     private List<String> categories = new ArrayList<String>(
             Arrays.asList("Science", "Technology", "Engineering", "Math"));
@@ -69,41 +66,9 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        final ActionBar actionBar = getSupportActionBar();
-
-
-
-        // ToDo: Figure out how why the menu icon is not showing up
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
-
-        // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this, mDrawer,R.string.Open, R.string.Close);
-        drawerToggle.setDrawerIndicatorEnabled(true);
-
-        // Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_person, null);
-
-        mDrawer.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -113,32 +78,5 @@ public class CategoriesActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.go_profile: {
-                Intent intent = new Intent(this, StatsActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.rules: {
-                Intent intent = new Intent(this, RulesActivity.class);
-                startActivity(intent);
-                break;
-            }
-            case R.id.log_out: {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                break;
-            }
-            default:{
-                Intent intent = new Intent(this, StatsActivity.class);
-                startActivity(intent);
-                break;
-            }
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 }

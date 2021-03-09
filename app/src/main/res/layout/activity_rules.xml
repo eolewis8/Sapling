@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:id="@+id/rules_list"
-            android:text="Rules go here (string input)"
+            android:text="Answer the questions the fastest to win! You lose 10 points per second."
             android:gravity="center"
             android:background="@drawable/border_text"
             android:layout_margin="10dp"

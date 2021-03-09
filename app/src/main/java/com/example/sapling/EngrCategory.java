@@ -22,11 +22,11 @@ import java.util.List;
 public class EngrCategory extends AppCompatActivity {
 
     private List<String> categories = new ArrayList<String>(
-            Arrays.asList("Electrical", "Civil", "Mechanical", "Industrial"));
+            Arrays.asList("Electrical", "Civil", "Mechanical", "Bioengineering"));
 
 
     private List<Integer> images = new ArrayList<>(Arrays.asList(R.drawable.ee_logo,
-            R.drawable.civil_logo, R.drawable.engr_logo, R.drawable.industry_logo));
+            R.drawable.civil_logo, R.drawable.engr_logo, R.drawable.bioe_logo));
 
     private RecyclerView recyclerView;
 
