@@ -64,7 +64,7 @@ class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.CategoryViewHolder>
 
     @Override
     public int getItemCount() {
-        return categories.size();
+        return Math.min(categories.size(), 3);
     }
 
     public void notifyNewDataAdded(List<String> categories, List<Integer> images,
