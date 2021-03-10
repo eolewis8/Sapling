@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -86,13 +87,6 @@ public class WinnersMultiActivity extends FragmentActivity implements PlayAgainD
         displayTopPlayers();
         dialog = new PlayAgainDialogFragment();
         dialog.show(getSupportFragmentManager(), "PlayAgainDialogFragment");
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     private void addStatsPlayerEventListener() {
@@ -181,6 +175,38 @@ public class WinnersMultiActivity extends FragmentActivity implements PlayAgainD
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch(id) {
+            case R.id.home:
+                intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.go_profile:
+                intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rules:
+                intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.log_out:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }

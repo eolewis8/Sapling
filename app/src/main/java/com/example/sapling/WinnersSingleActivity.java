@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.model.Users;
@@ -109,5 +111,38 @@ public class WinnersSingleActivity extends FragmentActivity implements PlayAgain
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         dialog.dismiss();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch(id) {
+            case R.id.home:
+                intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.go_profile:
+                intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rules:
+                intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.log_out:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 }

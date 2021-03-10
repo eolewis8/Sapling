@@ -1,6 +1,9 @@
 package com.example.sapling;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,6 +54,7 @@ public class StatsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         database = FirebaseDatabase.getInstance();
         userRef = database.getReference("users/" + Util.getCurrentUser());
         userRef.addValueEventListener(new ValueEventListener() {
@@ -59,7 +63,7 @@ public class StatsActivity extends AppCompatActivity {
                 Users user = snapshot.getValue(Users.class);
                 playerNameText.setText("Name: " + user.getFirstName() + " " + user.getLastName());
                 emailIDText.setText("Email: " + user.getEmail());
-                highScoreText.setText("High score: " + user.getScore());
+                highScoreText.setText("Total score: " + user.getScore());
                 avgRankText.setText("Average Rank: " + user.getAvgRank());
             }
 
@@ -68,6 +72,38 @@ public class StatsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch(id) {
+            case R.id.home:
+                intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.go_profile:
+                intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rules:
+                intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.log_out:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
 }
