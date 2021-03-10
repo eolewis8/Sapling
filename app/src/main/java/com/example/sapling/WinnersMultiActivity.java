@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -81,6 +82,10 @@ public class WinnersMultiActivity extends AppCompatActivity implements PlayAgain
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         imageMap.put(1, R.drawable.gold_logo);
         imageMap.put(2, R.drawable.silver_logo);
         imageMap.put(3, R.drawable.bronze_logo);
