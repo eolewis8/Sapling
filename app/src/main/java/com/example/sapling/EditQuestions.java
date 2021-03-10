@@ -2,12 +2,14 @@ package com.example.sapling;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,6 +58,21 @@ public class EditQuestions extends AppCompatActivity {
         choice3Text.setText(intent.getStringExtra("Choice3"));
         choice4Text.setText(intent.getStringExtra("Choice4"));
         database = FirebaseDatabase.getInstance();
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.back);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     public void saveQuestionToDb(View view) {
@@ -95,8 +112,29 @@ public class EditQuestions extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_instructor, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch (id) {
+            case R.id.home:
+                intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rules:
+                intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.log_out:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
