@@ -4,19 +4,30 @@
     android:icon="@drawable/ic_baseline_menu_24" >
 
     <item
-        android:id="@+id/go_profile"
-        app:showAsAction="never"
-        android:title="Profile">
-    </item>
-    <item
-        android:id="@+id/rules"
-        app:showAsAction="never"
-        android:title="Rules">
-    </item>
-    <item
-        android:id="@+id/log_out"
-        app:showAsAction="never"
-        android:title="Log Out">
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_baseline_more_vert_24"
+        app:showAsAction="always"
+        android:title="Dropdown Menu">
+
+        <menu>
+
+            <item
+                android:id="@+id/go_profile"
+                app:showAsAction="never"
+                android:title="Profile">
+            </item>
+            <item
+                android:id="@+id/rules"
+                app:showAsAction="never"
+                android:title="Rules">
+            </item>
+            <item
+                android:id="@+id/log_out"
+                app:showAsAction="never"
+                android:title="Log Out">
+            </item>
+        </menu>
     </item>
 
 </menu>

@@ -57,8 +57,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/high_score"
-            android:text="High score: Loading..."
+            android:id="@+id/player_total_score"
+            android:text="Score: Loading..."
             android:gravity="center"
             android:background="@drawable/border_text"
             android:layout_margin="10dp"
@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:id="@+id/player_rank"
+            android:id="@+id/player_avg_rank"
             android:text="Average Rank: Loading..."
             android:gravity="center"
             android:background="@drawable/border_text"

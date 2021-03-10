@@ -1,9 +1,12 @@
 package com.example.sapling;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -52,6 +55,31 @@ public class TechCategory extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch(id) {
+            case R.id.home:
+                intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.go_profile:
+                intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rules:
+                intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.log_out:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

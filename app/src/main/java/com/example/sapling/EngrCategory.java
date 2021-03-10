@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -67,15 +68,28 @@ public class EngrCategory extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case android.R.id.home:
-                Toast.makeText(this, "Go to Categories Screen", Toast.LENGTH_SHORT);
-            //case android.R.id.go_profile:
-            //    Toast.makeText(this, "Go to profile screen/stats screen", Toast.LENGTH_SHORT);
-            //case android.R.id.log_out:
-            //    Toast.makeText(this, "Go to Sign In", Toast.LENGTH_SHORT);
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent intent;
+        switch(id) {
+            case R.id.home:
+                intent = new Intent(this, CategoriesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.go_profile:
+                intent = new Intent(this, StatsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rules:
+                intent = new Intent(this, RulesActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.log_out:
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
         }
-        return (super.onOptionsItemSelected(menuItem));
+        return super.onOptionsItemSelected(item);
     }
+
 }
