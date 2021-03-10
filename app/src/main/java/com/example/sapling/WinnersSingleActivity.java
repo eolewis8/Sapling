@@ -3,6 +3,7 @@ package com.example.sapling;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.model.Users;
@@ -25,7 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-public class WinnersSingleActivity extends FragmentActivity implements PlayAgainDialogFragment.AlertDialogListener {
+public class WinnersSingleActivity extends AppCompatActivity implements PlayAgainDialogFragment.AlertDialogListener {
 
     private TextView scoreText;
     private FirebaseDatabase database;
@@ -51,6 +53,11 @@ public class WinnersSingleActivity extends FragmentActivity implements PlayAgain
         database = FirebaseDatabase.getInstance();
         scoreRef = database.getReference("users/" + playerID + "/score");
         userRef = database.getReference("users/");
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
         updateScoreForCurrentPlayer();
         updateRank();
         dialog = new PlayAgainDialogFragment();

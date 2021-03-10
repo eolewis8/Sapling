@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -40,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 // ToDo: Will display top 3 winners by student name
-public class WinnersMultiActivity extends FragmentActivity implements PlayAgainDialogFragment.AlertDialogListener {
+public class WinnersMultiActivity extends AppCompatActivity implements PlayAgainDialogFragment.AlertDialogListener {
 
     private List<String> categories = new ArrayList<String>();
     private static final String DEBUG_TAG = "WinnersMultiActivity";
@@ -75,6 +76,11 @@ public class WinnersMultiActivity extends FragmentActivity implements PlayAgainD
         userRef = database.getReference("users/");
         statsRef = database.getReference("rooms/" + roomName + "/stats/");
         addStatsPlayerEventListener();
+        // Find the toolbar view inside the activity layout
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        setSupportActionBar(toolbar);
         imageMap.put(1, R.drawable.gold_logo);
         imageMap.put(2, R.drawable.silver_logo);
         imageMap.put(3, R.drawable.bronze_logo);
