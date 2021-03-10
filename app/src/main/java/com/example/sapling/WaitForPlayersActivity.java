@@ -56,7 +56,11 @@ public class WaitForPlayersActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     long numPlayers = room.getNumPlayers() - room.getNumConnected();
-                    playerText.setText("Waiting for " + numPlayers + " players to join");
+                    String text = "Waiting for " + numPlayers + " players to join";
+                    if (numPlayers == 1) {
+                        text = "Waiting for " + numPlayers + " player to join";
+                    }
+                    playerText.setText(text);
                 }
             }
 

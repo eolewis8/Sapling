@@ -1,9 +1,14 @@
 package com.example.sapling;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-public class WinnersSingleActivity extends AppCompatActivity {
+public class WinnersSingleActivity extends FragmentActivity implements PlayAgainDialogFragment.AlertDialogListener {
 
     private TextView scoreText;
     private FirebaseDatabase database;
@@ -26,6 +31,8 @@ public class WinnersSingleActivity extends AppCompatActivity {
     private String playerID;
     private int score;
     private static final String DEBUG_TAG = "WinnersSingleActivity";
+    private ValueEventListener valueEventListener;
+    private DialogFragment dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,6 +51,8 @@ public class WinnersSingleActivity extends AppCompatActivity {
         userRef = database.getReference("users/");
         updateScoreForCurrentPlayer();
         updateRank();
+        dialog = new PlayAgainDialogFragment();
+        dialog.show(getSupportFragmentManager(), "PlayAgainDialogFragment");
     }
 
     private void updateScoreForCurrentPlayer() {
@@ -63,7 +72,7 @@ public class WinnersSingleActivity extends AppCompatActivity {
     }
 
     private void updateRank() {
-        userRef.orderByChild("score").addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int rank = (int) snapshot.getChildrenCount();
@@ -84,6 +93,21 @@ public class WinnersSingleActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        userRef.orderByChild("score").addValueEventListener(valueEventListener);
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        if (valueEventListener != null) {
+            userRef.removeEventListener(valueEventListener);
+        }
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
     }
 }

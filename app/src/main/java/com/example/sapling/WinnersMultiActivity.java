@@ -1,14 +1,20 @@
 package com.example.sapling;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 // ToDo: Will display top 3 winners by student name
-public class WinnersMultiActivity extends AppCompatActivity {
+public class WinnersMultiActivity extends FragmentActivity implements PlayAgainDialogFragment.AlertDialogListener {
 
     private List<String> categories = new ArrayList<String>();
     private static final String DEBUG_TAG = "WinnersMultiActivity";
@@ -50,6 +56,8 @@ public class WinnersMultiActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference statsPlayerRef, scoreRef, userRef, statsRef;
     String playerID, roomName;
+    private ValueEventListener userValueEventListener, statsValueEventListener;
+    private DialogFragment dialog;
 
 
     @Override
@@ -76,6 +84,8 @@ public class WinnersMultiActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         updateRank();
         displayTopPlayers();
+        dialog = new PlayAgainDialogFragment();
+        dialog.show(getSupportFragmentManager(), "PlayAgainDialogFragment");
     }
 
     @Override
@@ -103,7 +113,7 @@ public class WinnersMultiActivity extends AppCompatActivity {
     }
 
     private void updateRank() {
-        userRef.orderByChild("score").addValueEventListener(new ValueEventListener() {
+        userValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int rank = (int) snapshot.getChildrenCount();
@@ -117,12 +127,12 @@ public class WinnersMultiActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        userRef.orderByChild("score").addValueEventListener(userValueEventListener);
     }
 
     public void displayTopPlayers() {
-
-        statsRef.orderByValue().limitToLast(3).addValueEventListener(new ValueEventListener() {
+        statsValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.i(DEBUG_TAG, snapshot.getValue().toString());
@@ -142,9 +152,9 @@ public class WinnersMultiActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
 
-
+        statsRef.orderByValue().limitToLast(3).addValueEventListener(statsValueEventListener);
     }
 
     private void refreshRecyclerView() {
@@ -155,4 +165,22 @@ public class WinnersMultiActivity extends AppCompatActivity {
             adapter.notifyNewDataAdded(categories, images, scores);
         }
     }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        if (userValueEventListener != null) {
+            userRef.removeEventListener(userValueEventListener);
+        }
+        if (statsValueEventListener != null) {
+            statsRef.removeEventListener(statsValueEventListener);
+        }
+        Intent intent = new Intent(this, CategoriesActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        dialog.dismiss();
+    }
+
 }
